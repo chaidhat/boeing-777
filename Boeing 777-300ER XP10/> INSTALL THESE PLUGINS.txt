@@ -1,0 +1,48 @@
+PLEASE INSTALL THESE PLUGINS FOR A MORE BETTER EXPERIENCE OF THE AIRCRAFT. THE TOP ONES BEING MOST RECOMMENDED.
+
+
+
+===========================================================================
+	X-FMC FLIGHT MANAGEMENT COMPUTER
+
+
+		https://www.x-fmc.com << HIGHLY, HIGHLY RECOMMENDED
+
+
+This is vital for a VAST IMPROVEMENT TO XPLANE’S FMC. It provides so much more realistic features such as flight planning, SIDs and STARs arrivals, etc. etc. It is useful for all your other Boeing aircrafts.
+===========================================================================
+
+
+
+
+
+
+
+
+	HeadShake
+
+https://www.simcoders.com/headshake/features-and-download 
+
+It moves the camera around in a realistic manner when affected by G-forces, touchdowns, turbulence and many other factors. Adds to the realism of the aircraft.	Passenger FXhttp://forums.x-plane.org/index.php?/files/file/38625-passengersfx-adding-realistic-passengers-to-your-aircraft/
+
+Many cabin noises & announcements, it adds a whole new level of interactivity.
+
+
+
+
+
+	X-RAAS: Runway Awareness and Advisory System
+
+https://forums.x-plane.org/index.php?/files/file/36360-x-raas-runway-awareness-and-advisory-system/
+
+Gives indications for runway length, position, for navigation in airports. The real B777 is equipped with this system to help navigate and ensure safety.
+
+
+
+
+
+	XChecklist
+
+https://forums.x-plane.org/index.php?/files/file/20785-xchecklist-linwinmac3264/ 
+
+You can start the plane without having to switch back and from a .png file. Useful if you want to try fly the plane in a more realistic manner.
