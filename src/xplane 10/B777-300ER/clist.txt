@@ -1,0 +1,238 @@
+
+#Boeing 777-300ER created by Chai112
+#Download the aircraft at https://forums.x-plane.org/index.php?/profile/520176-chai112/
+#For BBJ remove the initial # from the list items to unblock them.
+
+sw_checklist:Checklists and Procedures for Boeing 777-300ER.
+sw_rcolsize:120
+sw_itemvoid:Thank you for downloading the B777.
+sw_itemvoid:Don’t forget to check back for updates at
+sw_itemvoid:https://forums.x-plane.org/index.php?/profile/520176-chai112/
+sw_itemvoid:________________________________________
+sw_itemvoid:This checklist
+sw_itemvoid:is customised for this project.
+sw_itemvoid: 
+sw_itemvoid:The checklist assumes normal
+sw_itemvoid:flow items are done, and
+sw_itemvoid:lists just critical items
+sw_itemvoid:and normal procedures.
+sw_itemvoid:Refer to quick manual
+sw_itemvoid:for extra details and where
+sw_itemvoid:switches are located.
+
+sw_checklist:Safety Check & Electrical Power up
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Gear Lever|DOWN
+sw_item:Parking Brake|SET
+sw_item:Flaps|UP
+sw_item:Speed Brake|RETRACTED
+sw_itemvoid: 
+sw_item:Battery Switch|ON
+sw_itemvoid:
+sw_itemvoid:Sorry, there is no external power.
+sw_itemvoid:
+sw_itemvoid:if APU Power is needed:
+sw_item:APU Generator|ON
+sw_item:APU Selector|START, then ON
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Preflight
+
+sw_checklist:Preflight Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Verify Sufficient For Flight|Oxygen Pressure
+sw_item:and|Hydraulic Quantity
+sw_item:and|Eng Oil Quantity
+sw_itemvoid:________________________________________
+sw_itemvoid: 
+sw_itemvoid:The initial data and Nav
+sw_itemvoid:data must be completed.
+sw_item:CDU|Enter Data
+sw_itemvoid:x-FMC is required. (Download at x-fmc.com)
+sw_itemvoid:________________________________________
+sw_itemvoid: 
+sw_itemvoid:Fuel must be calculated and
+sw_itemvoid:loaded to proceed.
+sw_item:Fuel|Completed
+sw_itemvoid:________________________________________
+sw_itemvoid:
+sw_item:L&R Prim Hyd Pumps|ON
+sw_item:Passenger Signs|SET
+sw_item:Wing Anti-Ice|AUTO
+sw_item:Eng Anti-Ice|AUTO
+sw_item:Eng Bleeds|ON
+sw_item:APU Bleed|AUTO
+sw_item:PFD|Verify
+sw_item:EICAS|Verify
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Preflight Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Before Start
+
+sw_checklist:Before Start Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Doors|Closed
+sw_item:Fuel|Pumps ON
+sw_item:APU Generator|ON
+sw_item:APU Selector|START, then ON
+sw_item:MCP|V2__ HDG__ ALT__
+sw_item:Takeoff speeds|V1__ VR__ V2__
+sw_item:Rudder and aileron trim|0,0
+sw_item:Stabilizer trim|___Units
+sw_item:Taxi and Takeoff briefing|Completed
+sw_item:MCP|SET V2
+sw_item: |ARM LNAV/VNAV
+sw_item: |SET RWY HDG
+sw_item: |SET Init Altitude
+sw_item:Beacon|ON
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Before Start Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Engine Start Procedure
+
+sw_checklist:Engine Start Procedure
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Throttle|Idle
+sw_itemvoid: 
+sw_itemvoid:Announce start sequence and
+sw_itemvoid:call each engine before start.
+sw_item:Eng Start Switch|Start
+sw_item:Fuel Control|Run
+sw_itemvoid:
+sw_itemvoid:At 33% n2, fuel is introduced.
+sw_itemvoid:EGT will not rise over than 500˚c.
+sw_itemvoid:At 63% n2, starter will automatically
+sw_itemvoid:disconnect, and the sequence is over.
+sw_itemvoid: 
+sw_item:Engine|Stable
+sw_itemvoid:Start other engine.
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Before Taxi 
+
+sw_checklist:Before Taxi Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Generators|ON
+sw_item:APU Selector|OFF
+sw_item:Flaps|Select T/O Flaps
+sw_item:Anti Ice|AS REQUIRED
+sw_item:Exterior Lights|AS REQUIRED
+sw_item:Transponder|AS REQUIRED
+sw_item:Autobrake|RTO
+sw_item:Flight Controls|CHECKED
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Before Taxi Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Before Takeoff
+
+sw_checklist:Before Take Off
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_itemvoid:Update Changes to Takeoff Brief.
+sw_itemvoid: 
+sw_item:Exterior Lights|AS REQUIRED
+sw_item:Transponder|AS REQUIRED
+sw_item:Clock/Timer|START
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Before Take Off Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - After Takeoff
+
+sw_checklist:After Take Off Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Pressurization|CHECK
+sw_item:Gear|UP
+sw_item:Flaps|UP
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “After Take Off Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Climb
+
+sw_checklist:Climb Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Altimeter|STD
+sw_item:Exterior Lights|AS REQUIRED
+sw_item:Fasten Seatbelts|OFF
+sw_item:Anti ice|OFF
+sw_item:Pressurization|CHECK
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Descent
+
+
+sw_checklist:Descent Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Program in CDU|STAR
+sw_item:and|RWY
+sw_item:and|NAV RADIO
+sw_itemvoid: 
+sw_item:Minimums|SET
+sw_item:Autobrake|SET
+sw_item:Anti Ice|AS REQUIRED
+sw_itemvoid: 
+sw_itemvoid:Conduct Approach Brief.
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Descent Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Approach
+
+sw_checklist:Approach Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Altimeters|SET
+sw_item:Fasten Seatbelts|ON
+sw_item:Exterior Lights|AS REQUIRED
+sw_item:VREF|SELECTED
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Approach Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - Landing
+
+sw_checklist:Landing Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_itemvoid:Verify Navigation is OK.
+sw_item:Gear|DOWN
+sw_item:Flaps|25/30
+sw_item:Speed Brake|ARMED
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Call “Landing Checklist”
+sw_itemvoid:________________________________________
+sw_itemvoid:Next - After Landing
+
+sw_checklist:After Landing Checklist
+sw_rcolsize:120
+sw_itemvoid:________________________________________
+sw_item:Flaps|UP
+sw_item:Speed brake|RETRACTED
+sw_item:APU Generator|ON
+sw_item:APU Selector|START, then ON
+sw_item:Exterior Lights|AS REQUIRED
+sw_item:Engine Anti Ice|AS REQUIRED
+sw_item:Autobrake|OFF
+sw_itemvoid: 
+sw_itemvoid: 
+sw_itemvoid:Thank you for flying the Boeing 777-300ER!
+sw_itemvoid:
+sw_itemvoid:
+sw_itemvoid:Best regards, Chai112
+sw_itemvoid:________________________________________

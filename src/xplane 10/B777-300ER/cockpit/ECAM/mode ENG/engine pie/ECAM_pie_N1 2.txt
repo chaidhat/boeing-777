@@ -1,0 +1,5 @@
+A
+750 version
+ x   y  
+ 0   0	// offsets of needle center of rotation from instrument center
+24  30	// comment: tick-mark radius and numerical label radius in pixels

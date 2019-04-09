@@ -1,0 +1,18 @@
+0 null
+1 eng fail l
+2 eng fail r
+3 eng fire
+4  eng egt
+5   apu running
+6 eng fail l
+7 eng fail r
+8 ap discon
+9 eng shutdown
+10 elec gen
+
+11 fuel press eng
+12 doors
+13   no smoking on
+14   seatbelt on
+15   parking brake set
+16   autobrakes rto

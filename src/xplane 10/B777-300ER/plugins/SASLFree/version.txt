@@ -1,0 +1,6 @@
+SASL
+Scriptable Aviation Simulation Library (Free Edition)
+Version: 3.2.4+3d8a967
+
+1-sim.com
+Copyright FlightFactor 2018

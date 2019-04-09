@@ -1,0 +1,11 @@
+A
+870 version
+s_left 	s_right t_bottom t_top
+ 0	 0	0	786	// comment: IAS 1000
+ 0	14	0	786	// comment: IAS 100
+ 0	28	0	786	// comment: IAS 10
+28	104	9	460	// comment: IAS 1
+10				// comment: knots per tickmark (small)
+ 0				// comment: knots per tickmark (big)
+20				// comment: knots per label
+ 4.0			// comment: pixels per knot
