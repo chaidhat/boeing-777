@@ -1,4 +1,6 @@
- 
+                      GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+                       
 Creating Digital Simulations of Aircraft
 Copyright (C) 2019 Chai
 
@@ -12,10 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 Below is the GNU General Public License <https://www.gnu.org/licenses/>.
-
-
-                   GNU GENERAL PUBLIC LICENSE
-                       Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
  Everyone is permitted to copy and distribute verbatim copies
