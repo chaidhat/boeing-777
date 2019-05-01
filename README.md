@@ -1,4 +1,5 @@
 # Chai112's Boeing 777-300ER
+# [Download](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/releases)
 
 ## [view latest issue tracker/news](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/projects/1)
 ## [view latest beta-beta](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/tree/master/src) (the most recent, unstable state)
