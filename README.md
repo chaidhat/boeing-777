@@ -1,7 +1,7 @@
 # Chai112's Boeing 777-300ER
 
-## [view latest beta-beta](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/tree/master/src) (the most recent, unstable state)
 ## [view latest issue tracker/news](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/projects/1)
+## [view latest beta-beta](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/tree/master/src) (the most recent, unstable state)
 ## <b>Consider <i>[donating to support](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P6BPHH98W5XDY&currency_code=CAD&source=url)</i></b>, it means a lot :)
 \
 [stats](https://www.somsubhra.com/github-release-stats/?username=Chai112&repository=Chai112-s-Boeing-777-300ER)
