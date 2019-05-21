@@ -1,39 +1,82 @@
 <html>
+<head>
 <title>Chai112's Boeing 777-300ER</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+<link rel="stylesheet" href="style.css">
 <style>
-body, html {
-  height: 100%;
-  font-family: "Inconsolata", sans-serif;
-}
 
-.bgimg {
-  background-position: center;
-  background-size: cover;
-  background-image: url("s/1.png");
-  min-height: 75%;
-}
-
-h1 {
-	color: white;
-	padding-left: 10%;
-}
-
-.menu {
-  display: none;
-}
 </style>
+</head>
 
-	<body bgcolor="#202020">
-		<p>
-			<h1>chai</h1>
-		</p>
-		<div>
+	<body bgcolor="#202020" style="border: none">
+
+
+		<div id="strip">
 			<img src="s/1.png" width=100%>
 		</div>
+
+		<div class="navbar" style="right: 0%; top:1vw">
+
+			<div id="move_right" class="dropdown" style="padding-right: 1%">
+				<button onclick="
+				if (document.getElementById('dc').style.display === 'block')
+				{
+					document.getElementById('dc').style.display = 'none'
+				}
+				else
+				{
+					document.getElementById('dc').style.display = 'block'
+				}
+
+				" class="dropbtn"><img src="s/dropdown.png" width=18vw height=18vw>
+				</button>
+		</div>
+
+  		</div>
+  		<div id="dc" class="dropdown-content" style="position:fixed; height:10vw; width:20vw; right:0%; top: 3.05vw">
+			<div class="w3-container w3-center w3-animate-left" style="font-size: 20px">
+				<div class="dropdown-menu" style="height:80vw; width:20vw; right:0%; top: 0vw">
+				<p style="text-align: right">
+				<b>AIFRED Project</b><br><br>
+				<b>ESC Project</b><br><br>
+				<b>Blender Reel</b><br><br>
+				<br>
+				Miscellaneous<br><br>
+				</p>
+			</div>
+		</div>
+  			</div>
+
+		<div class="navbar">
+			<a href="#home" style="padding-right: 5vw"></a>
+			<a href="#home" style="font-size: 24px; padding-top: 15px; font-family: 'Arial Black', Gadget, sans-serif">CHAI</a>
+  			<a href="#blog">ABOUT</a>
+		</div>
+
+		<div class="w3-container w3-center w3-animate-top">
+
+			<h1><p style="text-align:center; font-family: 'Arial Black', Gadget, sans-serif;">v0.42.0</p></h1>
+		</div>
+		
+		<h1 style="top: 35vw; font-family: 'Arial Black', Gadget, sans-serif; font-size: 5vw; color:white;"><p style="text-align:center"><i>BOEING</i></p></h1>
+
+		<div class="w3-container w3-center w3-animate-top2" id="strip"style="width: 100%; top:12vw">
+			<h1 style="top: -5vw; right: -0.7vw; font-family: 'Arial Black', Gadget, sans-serif; font-size: 2.5vw; color:#303030;"><p style="text-align:center">DOWNLOAD</p><br>
+
+
+	</h1>
+	<h1 style="top: 11vw; right: -0.7vw; font-size: 1vw; color:#303030;"><p style="text-align:center">75.0 MB from <br> https://github.com/Chai112</p><br><br>
+	</h1>
+
+	<div class="download" style="left: 40%; width: 10vw">
+				<button class="downloadbtn" style="width:100%" onclick="location.href='https://github.com/Chai112/Chai112-s-Boeing-777-300ER/releases/download/v0.41.1/Boeing.777-300ER.XP11.zip'"><img src="s/xp11.png" width=100%></button>
+		</div>
+			<div class="download" style="left: 51%; width: 10vw">
+				<button class="downloadbtn" style="width:100%"><img src="s/xp10.png" width=100%></button>
+		</div>
+
+
 	</body>
-h
+	h
 </html>

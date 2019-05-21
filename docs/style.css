@@ -1,0 +1,120 @@
+
+.bgimg {
+  background-position: center;
+  background-size: cover;
+  background-image: url("s/1.png");
+  min-height: 75%;
+}
+
+h1 {
+	color: #202020;
+	position: absolute;
+	width: 100%;
+	top: 16vw;
+	font-size: 10vw;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+p {
+
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#strip {
+                position: absolute;
+                min-width: 100px;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+
+.w3-animate-top{top:-300px; position:relative;animation:animatetop 1s forwards; animation-delay: 0.5s}@keyframes animatetop{from{top:-300px} to{top:0}}
+.w3-animate-top2{opacity: 0; animation:animatetop2 1s forwards; animation-delay: 0.5s;}@keyframes animatetop2{from{opacity:0} to{opacity:1}}
+.w3-animate-left{position:relative;animation: animateleft 0.25s}@keyframes animateleft{from{right:-100%;opacity:0} to{right:0%;opacity:1}}
+
+.navbar {
+  overflow: hidden;
+  list-style: none;
+    position:fixed;
+    left: 0%;
+    margin-right:0px;
+    margin-top:-20px;
+    height: 50px;
+  background-color: #202020;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.navbar a {
+  float: left;
+  font-size: 17px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  color: white;
+  text-align: center;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 21px;
+
+  text-decoration: none;
+}
+
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+float: right;
+  font-size: 20px;
+  font-family: helvetica;
+  font-style: bold;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  padding-right: 10px;
+  padding-top: 15px;
+
+	text-decoration: none;
+  background-color: inherit;
+  font-family: inherit;
+
+border: none;
+}
+
+.download {
+	position: absolute;
+	top: 3vw;
+}
+
+.downloadbtn {
+
+	text-decoration: none;
+  background-color: inherit;
+  font-family: inherit;
+
+border: none;
+}
+
+.dropdown-menu {
+	height:100px;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown-content {
+  display: none;
+}
+
+.navbar a:hover, .dropdown:hover {
+  filter: brightness(80%);
+}
+
+.download:hover {
+	filter: brightness(150%);
+}
