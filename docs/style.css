@@ -12,11 +12,13 @@ h1 {
 	width: 100%;
 	top: 16vw;
 	font-size: 10vw;
-	font-family: Verdana, Geneva, sans-serif;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 100;
 }
 
 p {
-
+font-family: 'Montserrat', sans-serif;
+	font-weight: 100;
 }
 
 body {
@@ -31,8 +33,22 @@ body {
                 right: 0;
             }
 
+            .stripa {
+                position: absolute;
+                min-width: 100px;
+                top: 0;
+                left: 0;
+                right: 0;
+
+                overflow: hidden;
+            }
+
+            .stripa .a {
+              transition: transform .5s ease;
+            }
+
 .w3-animate-top{top:-300px; position:relative;animation:animatetop 1s forwards; animation-delay: 0.5s}@keyframes animatetop{from{top:-300px} to{top:0}}
-.w3-animate-top2{opacity: 0; animation:animatetop2 1s forwards; animation-delay: 0.5s;}@keyframes animatetop2{from{opacity:0} to{opacity:1}}
+.w3-animate-top2{opacity: 0; animation:animatetop2 2s forwards; animation-delay: 1s;}@keyframes animatetop2{from{opacity:0} to{opacity:1}}
 .w3-animate-left{position:relative;animation: animateleft 0.25s}@keyframes animateleft{from{right:-100%;opacity:0} to{right:0%;opacity:1}}
 
 .navbar {
@@ -41,7 +57,7 @@ body {
     position:fixed;
     left: 0%;
     margin-right:0px;
-    margin-top:-20px;
+    margin-top:-30px;
     height: 50px;
   background-color: #202020;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -49,13 +65,13 @@ body {
 
 .navbar a {
   float: left;
-  font-size: 17px;
-  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
   color: white;
   text-align: center;
   padding-left: 3vw;
   padding-right: 3vw;
-  padding-top: 21px;
+  padding-top: 20px;
 
   text-decoration: none;
 }
@@ -85,7 +101,7 @@ border: none;
 
 .download {
 	position: absolute;
-	top: 3vw;
+	top: 1vw;
 }
 
 .downloadbtn {
@@ -115,6 +131,49 @@ border: none;
   filter: brightness(80%);
 }
 
+.stripa .a:hover
+{
+  transform: scale(1.1);
+  filter: brightness(80%);
+}
+
 .download:hover {
 	filter: brightness(150%);
+}
+
+.scroll-down {
+  position: absolute;
+  left: 50%;
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  z-index: 100;
+  text-decoration: none;
+  text-shadow: 0;
+  width: 13px;
+  height: 13px;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  z-index: 9;
+  left: 50%;
+  transform: translate(-50%, 0%) rotate(45deg);
+  animation:         fade_move_down 4s ease-in-out infinite;
+}
+
+
+/*animated scroll arrow animation*/
+@-webkit-keyframes fade_move_down {
+  0%   { -webkit-transform:translate(0,-10px) rotate(45deg); opacity: 0;  }
+  50%  { opacity: 1;  }
+  100% { -webkit-transform:translate(0,10px) rotate(45deg); opacity: 0; }
+}
+@-moz-keyframes fade_move_down {
+  0%   { -moz-transform:translate(0,-10px) rotate(45deg); opacity: 0;  }
+  50%  { opacity: 1;  }
+  100% { -moz-transform:translate(0,10px) rotate(45deg); opacity: 0; }
+}
+@keyframes fade_move_down {
+  0%   { transform:translate(0,-10px) rotate(45deg); opacity: 0;  }
+  50%  { opacity: 1;  }
+  100% { transform:translate(0,10px) rotate(45deg); opacity: 0; }
 }
