@@ -5,7 +5,7 @@ by Chai112
 https://forums.x-plane.org/index.php?/profile/520176-chai112/
 
 Now with engines!
-v0.41.0 
+v0.42.0 
 Please read the license included in the file for copyright information.
 I have created this product simply for entertainment purposes; the product has been distributed freely from X-Plane.com by Chai112. 
 
@@ -34,7 +34,9 @@ My goal is to bring this into X-Plane as a freeware product. So basically, in a 
 I’ve made many improvements to the exterior of the aircraft!
 Here they are!
 
-NEW IN THIS UPDATE v0.41.0
+NEW IN THIS UPDATE find the latest changelog on github https://github.com/Chai112/Chai112-s-Boeing-777-300ER
+
+v0.41.0
 
 	+ FMA logic
 	+ Custom coded EICAS messages
