@@ -1,0 +1,89 @@
+This are the checklists of the Boeing 777-300ER,
+to be displayed on the Electronic Checklist Display.
+
+These exclude Normal Procedures, which are to be carried out by CAPT and FO alongside the checklists. Which can be found here
+
+https://www.aviationlads.com/download/boeing-777-series-checklist/
+
+THIS MUST NOT BE USED FOR TRAINING PURPOSES
+
+>PREFLIGHT<
+
+Oxygen				Tested 100%
+Flight instruments		Heading___, Altimeter___
+Parking brake			Set
+Fuel control switches		CUTOFF
+
+
+>BEFORE START<
+
+Flight deck door		Closed and locked
+Passenger signs			___
+MCP				V2___, HDG/TRK___, ALTITUDE___
+Takeoff speeds			V1___, VR___, V2___
+CDU preflight			Completed
+Trim				___Units, 0, 0
+Taxi and takeoff briefing	Completed
+Beacon				ON
+
+
+>BEFORE TAXI<
+
+Anti-ice			___
+Recall				Checked
+Autobrake			RTO
+Flight controls			Checked
+Ground equipment		Clear
+
+
+>BEFORE TAKEOFF<
+
+Flaps				Set___
+
+
+>AFTER TAKEOFF<
+
+Landing gear			Up
+Flaps				Set___
+
+
+>DESCENT<
+
+Recall				Checked
+Notes				Checked
+Autobrake			___Set
+Landing Data			VREF___, Minimums___ft
+Approach Briefing		Completed
+
+
+>APPROACH<
+
+Altimeters			___Set
+
+
+>LANDING<
+
+Speedbrake			Armed
+Landing gear			Down
+Flaps				___Set
+
+
+>SHUTDOWN<
+
+Hydraulic panel			Set
+Auxiliary fuel switch		OFF
+Fuel pumps			OFF
+Flaps				Up
+Parking brake			Set
+Fuel control switches		CUTOFF
+Weather radar			OFF
+
+
+>SECURE<
+
+Adiru				OFF
+Emergency exit lights		OFF
+Packs				OFF
+
+
+

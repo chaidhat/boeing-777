@@ -15,6 +15,19 @@ rcusn1 = 0
 
 frame = 0
 
+function fcs_l_on (phase)
+	if phase == SASL_COMMAND_END then
+    	print "fcs_l_on"
+	end
+end --end fcs_l_on
+
+function fcs_l_cutoff (phase)
+    if phase == SASL_COMMAND_END then
+    	print "fcs_l_cutoff"
+	end
+end --end fcs_l_cutoff
+
+
 
 
 
@@ -98,7 +111,16 @@ end
 end -- end Msg
 --]]
 
+--donut/throttle_quad/fuel_control_switch_l_cutoff
+lr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_l_run", "")
+rr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_r_run", "")
+lc = sasl.createCommand("donut/throttle_quad/fuel_control_switch_l_cutoff", "")
+lr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_r_cutoff", "")
+sasl.registerCommandHandler(lr , 0, fcs_l_on)
+sasl.registerCommandHandler(lc , 0, fcs_l_cutoff)
+
 function update ()
+
 
 frame = frame + 1
 

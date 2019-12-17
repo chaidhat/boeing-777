@@ -7,11 +7,11 @@ panelHeight3d = 2048
 
 components={
 
-_Main_Datarefs {};  -- Main dataref compiler
+_Main_Data {};
 Draw {
 	position={0,0,400,640}
 };
-Sound {};
+_Main_Sound {};
 
 Panel_EICAS {};
 Panel_MCP {};

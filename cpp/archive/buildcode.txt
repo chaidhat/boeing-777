@@ -1,0 +1,20 @@
+cd ../b777/cpp
+
+gcc helloWorld.c -DAPL -Llib/xplane_mac -lcurl -o bin/mac.xpl -flat_namespace -undefined warning
+
+gcc ASE_main.cpp updateLoader.cpp updateWindow.cpp -o bin/mac.xpl -DAPL -Llib/xplane_mac -lcurl -flat_namespace -undefined warning
+
+gcc SimDataTest.cpp SimDataTest2.cpp -DAPL -LSDK/Libraries/Mac/ -o bin/mac.xpl -flat_namespace -undefined warning
+
+
+=== TESTING BELOW ===
+
+>>SDK/Libraries/Mac/ is lib/xplane_mac
+
+cd ../b777 && gcc -F SDK/Libraries/Mac/XPLM.framework -F SDK/Libraries/Mac/XPWidgets.framework SimDataTest.cpp -ISDK/CHeaders/XPLM/XPLMDataAccess.h -DAPL -I/usr/local/include -ISDK/XPLM -ISDK/Widgets -shared -LSDK/Libraries/Mac/ -o mac.xpl -flat_namespace -undefined warning
+
+cd ../b777 && gcc SimDataTest.cpp SimDataTest2.cpp -DAPL -LSDK/Libraries/Mac/ -o mac.xpl -flat_namespace -undefined warning
+
+cd ../b777 && gcc helloWorld.c -DAPL -LSDK/Libraries/Mac/ -o mac.xpl -flat_namespace -undefined warning
+
+$ g++ -c -m32 -pipe -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -fvisibility=hidden -O2 -fmessage-length=0 -D_FORTIFY_SOURCE=2 -fstack-protector -funwind-tables -fasynchronous-unwind-tables -W -fPIC -DXPLM200 -DAPL=0 -DIBM=0 -DLIN=1 -I../../SDK/CHeaders/XPLM -I../../SDK/CHeaders/Widgets -I. -I/usr/local/include -o HelloWorld.o HelloWorld.c
