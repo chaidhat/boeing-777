@@ -6,6 +6,10 @@ labels: ''
 assignees: ''
 
 ---
+**Information**
+Client: Your alias/username
+Contact date: DD/MM/YYYY
+Reference Ticket: Contact you here
 
 **Describe the problem**
 A clear and concise description of what the problem is.
