@@ -1,53 +1,0 @@
-PLEASE INSTALL THESE PLUGINS FOR A MORE BETTER EXPERIENCE OF THE AIRCRAFT. THE TOP ONES BEING MOST RECOMMENDED.
-
-
-
-===========================================================================
-	X-FMC FLIGHT MANAGEMENT COMPUTER
-
-
-		https://www.x-fmc.com << HIGHLY, HIGHLY RECOMMENDED
-
-
-This is vital for a VAST IMPROVEMENT TO XPLANE’S FMC. It provides so much more realistic features such as flight planning, SIDs and STARs arrivals, etc. etc. It is useful for all your other Boeing aircrafts.
-===========================================================================
-
-
-
-
-
-
-
-	XChecklist
-
-https://forums.x-plane.org/index.php?/files/file/20785-xchecklist-linwinmac3264/ 
-
-
-
-The aircraft is compatible with XChecklist so that you can start the plane without having to switch back and from a .png file. Useful if you want to try fly the plane in a more realistic manner.
-
-
-
-
-	HeadShake
-
-https://www.simcoders.com/headshake/features-and-download 
-
-
-Not only is this plugin great for this aircraft, it can be used with every type of aircraft; from a GA plane to a fighter. It moves the camera around in a realistic manner when affected by G-forces, touchdowns, turbulence and many other factors.	Passenger FXhttp://forums.x-plane.org/index.php?/files/file/38625-passengersfx-adding-realistic-passengers-to-your-aircraft/
-
-
-
-With many cabin noises & announcements, it adds a whole new level of realism.
-
-
-
-
-
-	X-RAAS: Runway Awareness and Advisory System
-
-https://forums.x-plane.org/index.php?/files/file/36360-x-raas-runway-awareness-and-advisory-system/
-
-
-
-Gives indications for runway length, position, etc. The Boeing 777 is equipped with this system to help navigate unfamiliar airports.
