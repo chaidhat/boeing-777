@@ -1,4 +1,4 @@
-# [Download Latest Version Here](https://chai112.github.io/Chai112-s-Boeing-777-300ER/)
+# [Download Latest Version Here](https://chai112.github.io/Boeing-777-300ER/)
 # Chai112's Boeing 777-300ER
 
 ### This is the GitHub repo of a freeware Boeing 777-300ER project for X-Plane - by Chai112.
