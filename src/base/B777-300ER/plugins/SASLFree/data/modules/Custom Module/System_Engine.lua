@@ -15,62 +15,17 @@ rcusn1 = 0
 
 frame = 0
 
-function fcs_l_run (phase)
+function fcs_l_on (phase)
 	if phase == SASL_COMMAND_END then
-    	print "fcs_l_run"
-        set(globalPropertyf("donut/panel/fuel1"), 1)
+    	print "fcs_l_on"
 	end
-end -- end fcs_l_on
-
-function fcs_r_run (phase)
-    if phase == SASL_COMMAND_END then
-        print "fcs_r_run"
-        set(globalPropertyf("donut/panel/fuel2"), 1)
-    end
-end -- end fcs_r_on
+end --end fcs_l_on
 
 function fcs_l_cutoff (phase)
     if phase == SASL_COMMAND_END then
     	print "fcs_l_cutoff"
-        set(globalPropertyf("donut/panel/fuel1"), 0)
 	end
-end -- end fcs_l_cutoff
-
-function fcs_r_cutoff (phase)
-    if phase == SASL_COMMAND_END then
-        print "fcs_r_cutoff"
-        set(globalPropertyf("donut/panel/fuel2"), 0)
-    end
-end -- end fcs_r_cutoff
-
-function fcs_animate ()
-    fl = get(globalPropertyf("donut/panel/fuel1"))
-    fl_p = get(globalPropertyf("donut/panels/throttle_column/fuel_control_switch_l_pos"))
-    fr = get(globalPropertyf("donut/panel/fuel2"))
-    fr_p = get(globalPropertyf("donut/panels/throttle_column/fuel_control_switch_r_pos"))
-    if fl == 1 and fl_p < 1 then
-        set(globalPropertyf("donut/panels/throttle_column/fuel_control_switch_l_pos"), fl_p + 0.1)
-    end -- end if
-    if fl == 0 and fl_p > 0 then
-        set(globalPropertyf("donut/panels/throttle_column/fuel_control_switch_l_pos"), fl_p - 0.1)
-    end -- end if
-    if fr == 1 and fr_p < 1 then
-        set(globalPropertyf("donut/panels/throttle_column/fuel_control_switch_r_pos"), fr_p + 0.1)
-    end -- end if
-    if fr == 0 and fr_p > 0 then
-        set(globalPropertyf("donut/panels/throttle_column/fuel_control_switch_r_pos"), fr_p - 0.1)
-    end -- end if
-
-end -- end fcs_animate
-
-lr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_l_run", "")
-rr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_r_run", "")
-lc = sasl.createCommand("donut/throttle_quad/fuel_control_switch_l_cutoff", "")
-rc = sasl.createCommand("donut/throttle_quad/fuel_control_switch_r_cutoff", "")
-sasl.registerCommandHandler(lr , 0, fcs_l_run)
-sasl.registerCommandHandler(rr , 0, fcs_r_run)
-sasl.registerCommandHandler(lc , 0, fcs_l_cutoff)
-sasl.registerCommandHandler(rc , 0, fcs_r_cutoff)
+end --end fcs_l_cutoff
 
 
 
@@ -157,10 +112,14 @@ end -- end Msg
 --]]
 
 --donut/throttle_quad/fuel_control_switch_l_cutoff
+lr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_l_run", "")
+rr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_r_run", "")
+lc = sasl.createCommand("donut/throttle_quad/fuel_control_switch_l_cutoff", "")
+lr = sasl.createCommand("donut/throttle_quad/fuel_control_switch_r_cutoff", "")
+sasl.registerCommandHandler(lr , 0, fcs_l_on)
+sasl.registerCommandHandler(lc , 0, fcs_l_cutoff)
 
 function update ()
-
-fcs_animate()
 
 
 frame = frame + 1
@@ -324,7 +283,8 @@ ClearMsg ("eng fail l+r", 3)
 ClearMsg ("eng fail l", 3)
 ClearMsg ("eng fail r", 3)
 
-x = get(globalPropertyf("xfmc/airbus/V1")) or 100
+--x = get(globalPropertyf("xfmc/airbus/V1")) or 100
+x=100 -- commented out on 01/03/2020
 if get(globalPropertyf("sim/flightmodel/position/indicated_airspeed")) < get(x) - 6 then
 if ln1 < 20 and lfuel and (not lstart) and rn1 < 20 and rfuel and (not rstart) then
 Msg ("eng fail l+r", 3)

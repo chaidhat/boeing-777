@@ -42,11 +42,11 @@ function ds(name) -- creates string dataref
 
 end -- end cs
 
-for i = 1, 11, 1 do -- defines EICAS datarefs (189)
+for i = 1, 12, 1 do -- defines EICAS datarefs (189)
 
-	--ds ("donut/eicasmsg/" .. i)
-	--ds ("donut/eicasmsg/" .. i .. "/r")
-	--ds ("donut/eicasmsg/" .. i .. "/w")
+	ds ("donut/eicasmsg/" .. i)
+	ds ("donut/eicasmsg/" .. i .. "/r")
+	ds ("donut/eicasmsg/" .. i .. "/w")
 
 
 

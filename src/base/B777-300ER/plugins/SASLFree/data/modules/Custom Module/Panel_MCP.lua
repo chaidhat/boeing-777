@@ -169,105 +169,6 @@ end
 return out
 end -- end inttobyte
 
-function setdigit (name, num)
-    if num == 0 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 1)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 0)
-        set(globalPropertyf(name .. "/5"), 1)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 1)
-    end
-    if num == 1 then
-        set(globalPropertyf(name .. "/1"), 0)
-        set(globalPropertyf(name .. "/2"), 0)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 0)
-        set(globalPropertyf(name .. "/5"), 0)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 0)
-    end
-    if num == 2 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 0)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 1)
-        set(globalPropertyf(name .. "/6"), 0)
-        set(globalPropertyf(name .. "/7"), 1)
-    end
-    if num == 3 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 0)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 0)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 1)
-    end
-    if num == 4 then
-        set(globalPropertyf(name .. "/1"), 0)
-        set(globalPropertyf(name .. "/2"), 1)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 0)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 0)
-    end
-    if num == 5 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 1)
-        set(globalPropertyf(name .. "/3"), 0)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 0)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 1)
-    end
-    if num == 6 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 1)
-        set(globalPropertyf(name .. "/3"), 0)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 1)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 1)
-    end
-    if num == 7 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 0)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 0)
-        set(globalPropertyf(name .. "/5"), 0)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 0)
-    end
-    if num == 8 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 1)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 1)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 1)
-    end
-    if num == 9 then
-        set(globalPropertyf(name .. "/1"), 1)
-        set(globalPropertyf(name .. "/2"), 1)
-        set(globalPropertyf(name .. "/3"), 1)
-        set(globalPropertyf(name .. "/4"), 1)
-        set(globalPropertyf(name .. "/5"), 0)
-        set(globalPropertyf(name .. "/6"), 1)
-        set(globalPropertyf(name .. "/7"), 0)
-    end
-end
-
-function setdigits (name, digits, num)
-    for i = 0, digits - 1, 1 do
-        setdigit(name .. "/" .. digits - (i), math.floor(num / math.pow(10, i)) % 10)
-    end
-end
-
 
 
 
@@ -281,27 +182,22 @@ function update ()
 
 if frame % 5 == 0 then
 	x = 1
-	while x == 1 do -- allocates messages
-		x = 0
-		k = 1
-		while (not (get(globalPropertys("donut/eicasmsg/" .. k + 1)) == "")) and k < 10 do -- allocates messages
-			if (get(globalPropertys("donut/eicasmsg/" .. k)):sub (1,1) == " ") then
-				if not (get(globalPropertys("donut/eicasmsg/" .. k + 1)):sub (1,1) == " ") then
-					l = get(globalPropertys("donut/eicasmsg/" .. k + 1))
-					set(globalPropertys("donut/eicasmsg/" .. k + 1), get(globalPropertys("donut/eicasmsg/" .. k)))
-					set(globalPropertys("donut/eicasmsg/" .. k), l)
-					x = 1
-				end
+while x == 1 do -- allocates messages
+	x = 0
+	k = 1
+	while (not (get(globalPropertys("donut/eicasmsg/" .. k + 1)) == "")) and k < 10 do -- allocates messages
+		if (get(globalPropertys("donut/eicasmsg/" .. k)):sub (1,1) == " ") then
+			if not (get(globalPropertys("donut/eicasmsg/" .. k + 1)):sub (1,1) == " ") then
+				l = get(globalPropertys("donut/eicasmsg/" .. k + 1))
+				set(globalPropertys("donut/eicasmsg/" .. k + 1), get(globalPropertys("donut/eicasmsg/" .. k)))
+				set(globalPropertys("donut/eicasmsg/" .. k), l)
+				x = 1
 			end
-			k = k + 1
 		end
+		k = k + 1
 	end
 end
-
-setdigits("donut/digits/mcp/spd", 3, get(globalPropertyf("donut/mcp/spd")))
-setdigits("donut/digits/mcp/hdg", 3, get(globalPropertyf("donut/mcp/hdg")))
-setdigits("donut/digits/mcp/vs", 4, get(globalPropertyf("donut/mcp/vv")))
-setdigits("donut/digits/mcp/alt", 5, get(globalPropertyf("donut/mcp/alt")))
+end
 
 
 frame = frame + 1
@@ -312,9 +208,11 @@ set (globalPropertyf("donut/copyrightmessage"), 0)
 end
 end
 
+--[[
 if get(globalPropertyf("xfmc/Status")) then
 fmcOn = get(globalPropertyf("xfmc/Status"))
 end
+]]--
 
 get(globalPropertyf("donut/panels/MCP/iasmach"))
 get(globalPropertyf("donut/panels/MCP/hdgtrk"))

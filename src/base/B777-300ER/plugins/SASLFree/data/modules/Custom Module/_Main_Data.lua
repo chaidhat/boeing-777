@@ -4,9 +4,11 @@
 -- Script Version   1.0.0
 -- Aircraft Version 0.40.0
 
+local y = 0
 local a = 0
 local coldDark = {}
-local init = 0
+local frame = 0
+local alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o"}
 
 function d (name, default, onColdDark) -- creates dataref
 	default = default or 1.0
@@ -15,7 +17,7 @@ function d (name, default, onColdDark) -- creates dataref
 	defineProperty("x" .. a, createGlobalPropertyf(name, default, false, true))
 	a = a + 1
 
-end -- end d
+end -- end c
 
 function di(name, default, onColdDark) -- creates dataref as int
 	default = default or 1.0
@@ -24,7 +26,7 @@ function di(name, default, onColdDark) -- creates dataref as int
 	defineProperty("x" .. a, createGlobalPropertyi(name, default, false, true))
 	a = a + 1
 
-end -- end di
+end -- end ci
 
 function da(name, length) -- creates an array for similar variables
 	for i = 0, length, 1 do
@@ -32,64 +34,53 @@ function da(name, length) -- creates an array for similar variables
 
 	
 	end -- end for
-end -- end da
+end -- end ca
 
 function ds(name) -- creates string dataref
 	defineProperty("x" .. a, createGlobalPropertys(name, "", false, true))
 	a = a + 1
 
-end -- end ds
+end -- end cs
 
-function dd(name, noDigits) -- creates digit datarefs
-	noDigits = noDigits or 1
-
-	if noDigits == 1 then
-		for j = 1, 7, 1 do
-			d(name .. "/" .. j)
-		end
-	else
-		for i = 1, noDigits, 1 do
-			for j = 1, 7, 1 do
-				d(name .. "/" .. i .. "/" .. j)
-			end
-		end
-	end
-
-end -- end ds
-
-
-
-function update ()
-
-	if not init then -- initialisation
-		set(globalPropertyf("sim/flightmodel/misc/cgz_ref_to_default"), 0.736332)
-		set(globalPropertyi("sim/cockpit/engine/APU_switch"), 0)
-
-		for i = 1, table.getn(coldDark), 1 do
-			set("x" .. i, coldDark[i])
-		end
-
-		init = true
-
-	end -- end if
-
-end -- end update
-
-for i = 1, 11, 1 do -- defines EICAS datarefs (189)
+for i = 1, 12, 1 do -- defines EICAS datarefs (189)
 
 	ds ("donut/eicasmsg/" .. i)
 	ds ("donut/eicasmsg/" .. i .. "/r")
 	ds ("donut/eicasmsg/" .. i .. "/w")
+
+
+
 
 end -- end for loop
 
 
 
 if get(globalPropertyf("sim/time/total_flight_time_sec")) > 1 then
-	createGlobalPropertyf("donut/a", 1, false, true)
+createGlobalPropertyf("donut/a", 1, false, true)
 else
-	createGlobalPropertyf("donut/a", 0, false, true)
+createGlobalPropertyf("donut/a", 0, false, true)
 end
+
+function update ()
+
+	if frame < 10 then
+
+		set(globalPropertyf("sim/flightmodel/misc/cgz_ref_to_default"), 0.736332)
+		set(globalPropertyi("sim/cockpit/engine/APU_switch"), 0)
+
+	for i = 1, table.getn(coldDark), 1 do
+	set("x" .. i, coldDark[i])
+	end
+	frame = 1
+	end -- end if
+
+	if get(globalPropertyi("sim/time/sim_speed")) > 0 and get(globalPropertyf("sim/time/total_flight_time_sec")) > 1 and get(globalPropertyf("sim/time/total_flight_time_sec")) < 1.05 and y == 0 then
+		y = 1
+		--sasl.reloadPlugins()
+		--sasl.commandOnce(sasl.findCommand("sasl/reload/AE"))
+	end
+
+end -- end update
 
 d ("donut/a", 0)
 d "donut/m"
@@ -125,19 +116,11 @@ di ("donut/eng/egtstrtr", 700)
 d "donut/panel/cross"          --Fuel crossfeed button out
 d "donut/panel/fuel1"         --Fuel switch 1
 d "donut/panel/fuel2"         --Fuel switch 2
+d "donut/panel/throttle_column/fuel_control_switch_l_pos"
+d "donut/panel/throttle_column/fuel_control_switch_r_pos"
 d "donut/panel/gear"           --Gear Lever
 
-d "donut/panels/throttle_column/fuel_control_switch_l_pos"
-d "donut/panels/throttle_column/fuel_control_switch_r_pos"
 
-dd ("donut/digits/radio1/a", 6)
-dd ("donut/digits/radio1/s", 6)
-dd ("donut/digits/xpndr", 4)
-
-dd ("donut/digits/mcp/spd", 3)
-dd ("donut/digits/mcp/hdg", 3)
-dd ("donut/digits/mcp/vs", 4)
-dd ("donut/digits/mcp/alt", 5)
 
 d "donut/panels/MCP/speed"
 d "donut/panels/MCP/heading"

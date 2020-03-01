@@ -208,9 +208,11 @@ set (globalPropertyf("donut/copyrightmessage"), 0)
 end
 end
 
+--[[
 if get(globalPropertyf("xfmc/Status")) then
 fmcOn = get(globalPropertyf("xfmc/Status"))
 end
+]]--
 
 get(globalPropertyf("donut/panels/MCP/iasmach"))
 get(globalPropertyf("donut/panels/MCP/hdgtrk"))

@@ -283,7 +283,8 @@ ClearMsg ("eng fail l+r", 3)
 ClearMsg ("eng fail l", 3)
 ClearMsg ("eng fail r", 3)
 
-x = get(globalPropertyf("xfmc/airbus/V1")) or 100
+--x = get(globalPropertyf("xfmc/airbus/V1")) or 100
+x=100 -- commented out on 01/03/2020
 if get(globalPropertyf("sim/flightmodel/position/indicated_airspeed")) < get(x) - 6 then
 if ln1 < 20 and lfuel and (not lstart) and rn1 < 20 and rfuel and (not rstart) then
 Msg ("eng fail l+r", 3)

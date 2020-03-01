@@ -66,6 +66,8 @@ for i = 1,2 do
 end
 
 ---- input datarefs   array values would be cleaner, but this is a limitation of SASL
+defineProperty("x", createGlobalPropertyf("donut/m", 1.0))
+
 defineProperty("n1val_1", globalPropertyfae("sim/flightmodel/engine/ENGN_N1_", 1))
 defineProperty("n1val_2", globalPropertyfae("sim/flightmodel/engine/ENGN_N1_", 2))
 
@@ -77,6 +79,8 @@ defineProperty("n2val_2", globalPropertyfae("sim/flightmodel/engine/ENGN_N2_", 2
 function update ()
 
 -- read datarefs for this frame
+
+    set(x, 7.0)
 
 	n1[1] = get (n1val_1)
 	n1[2] = get (n1val_2)

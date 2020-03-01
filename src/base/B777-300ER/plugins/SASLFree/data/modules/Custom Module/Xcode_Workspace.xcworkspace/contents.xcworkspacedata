@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "_Main">
+      <FileRef
+         location = "group:_Main_Datarefs.lua">
+      </FileRef>
+      <FileRef
+         location = "group:_Main_EICAS.lua">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Panel">
+      <FileRef
+         location = "group:Panel_EICAS.lua">
+      </FileRef>
+      <FileRef
+         location = "group:Panel_MCP.lua">
+      </FileRef>
+      <FileRef
+         location = "group:Panel_PFD.lua">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "System">
+      <FileRef
+         location = "group:System_Bleed.lua">
+      </FileRef>
+      <FileRef
+         location = "group:System_Engine.lua">
+      </FileRef>
+      <FileRef
+         location = "group:System_Fuel.lua">
+      </FileRef>
+      <FileRef
+         location = "group:System_Radio.lua">
+      </FileRef>
+   </Group>
+</Workspace>
