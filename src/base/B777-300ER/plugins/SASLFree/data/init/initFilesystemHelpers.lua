@@ -1,12 +1,13 @@
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- FILESYSTEM HELPERS ----------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Filesystem helpers
+-------------------------------------------------------------------------------
 
--- Return true if file exists
+--- Checks if specified file exists.
+--- @param fileName string
+--- @return boolean
 function isFileExists(fileName)
     local f = io.open(fileName)
-    if nil == f then
+    if f == nil then
         return false
     else
         io.close(f)
@@ -14,38 +15,42 @@ function isFileExists(fileName)
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Remove extension from file name
+--- Removes extension from path to file.
+--- @param filePath string
+--- @return string
 function extractFileName(filePath)
     for i = string.len(filePath), 1, -1 do
         if string.sub(filePath, i, i) == '.' then
-            return string.sub(filePath, 1, i-1)
+            return string.sub(filePath, 1, i - 1)
         end
     end
     return filePath
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Try to find file on search paths
+--- Loads chunk of Lua code from specified file.
+--- Will be searched according to the current list of search paths.
+--- @param fileName string
+--- @return function
 function openFile(fileName)
     local name = extractFileName(fileName)
 
-    for _, v in ipairs(searchPath) do
+    for _, v in ipairs(private.searchPath) do
         local fullName
         local subdir
         if 0 < string.len(v) then
-            fullName = v .. '/' .. fileName
-            subdir = v .. '/' .. name
+            fullName = v..'/'..fileName
+            subdir = v..'/'..name
         else
             fullName = fileName
             subdir = name
         end
 
-        -- Check if it is available at current path
         if isFileExists(fullName) then
             local f, errorMsg = loadfile(fullName)
             if f then
@@ -55,7 +60,6 @@ function openFile(fileName)
             end
         end
 
-        -- Check subdirectory
         local subFullName = subdir .. '/' .. fileName
         if isFileExists(subFullName) then
             local f, errorMsg = loadfile(subFullName)
@@ -70,24 +74,27 @@ function openFile(fileName)
     return nil
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Find specified resource file
-function findResourceFile(fileName) 
-    for _, v in ipairs(searchResourcesPath) do
+--- Finds specified resource file.
+--- Will be searched according to the current list of search resources paths.
+--- @param fileName string
+--- @return string
+function findResourceFile(fileName)
+    for _, v in ipairs(private.searchResourcesPath) do
         local f = v .. '/' .. fileName
         if isFileExists(f) then
             return f
         end
     end
-   
-    if not isFileExists(fileName) then    
-        return 0
+
+    if not isFileExists(fileName) then
+        return nil
     else
         return fileName
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------

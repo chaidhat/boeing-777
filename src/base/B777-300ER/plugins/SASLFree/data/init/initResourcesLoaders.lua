@@ -1,107 +1,146 @@
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MODULES IMAGES LOADER ----------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Resources loaders
+-------------------------------------------------------------------------------
 
--- Special trace logger for resource loading errors
-function logResourceErrorStacktrace(...)
-    logError(...)
-    local currentLevel = 1
-    while true do
-        local errorInfo = debug.getinfo(currentLevel, "Sl")
-        if not errorInfo or errorInfo.what == "C" then break end
-        logError(string.format("Resource loading stack trace [%s]:%d", errorInfo.short_src, errorInfo.currentline))
-        currentLevel = currentLevel + 1
-     end
-end
-
--- Load texture image.
--- Loads image and sets texture coords.  It can be called in forms of:
--- loadImage(fileName) -- sets texture coords to entire texture
--- loadImage(fileName, width, height) -- sets texture coords to show 
---    center part of image.  width and height sets size of image part
--- loadImage(fileName, x, y, width, height) - loads specified part of image
-function loadImage(fileName, x, y, width, height)    
+--- Loads texture from image.
+--- @param fileName string
+--- @param x number
+--- @param y number
+--- @param width number
+--- @param height number
+--- @overload fun(fileName:string):number
+--- @overload fun(fileName:string, x:number, y:number):number
+--- @return number, number, number
+function loadImage(fileName, x, y, width, height)
     local f = findResourceFile(fileName)
-    if f == 0 then 
-        logResourceErrorStacktrace("Can't find texture", fileName)
+    if f == nil then
+        logError("Can't find texture", fileName)
         return nil
     end
 
     local s
     if height ~= nil then s = sasl.gl.getGLTexture(f, x, y, width, height)
     elseif y ~= nil then s = sasl.gl.getGLTexture(f, x, y)
-    else s = sasl.gl.getGLTexture(f) end    
-    
+    else s = sasl.gl.getGLTexture(f) end
+
     if not s then
-        logResourceErrorStacktrace("Can't load texture", fileName)
+        logError("Can't load texture", fileName)
         return nil
     end
-    local h, w = sasl.gl.getTextureSize(s)
-    return s, h, w
+    local w, h = sasl.gl.getTextureSize(s)
+    return s, w, h
+end
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--- Loads SVG texture from image.
+--- @param fileName string
+--- @param rasterWidth number
+--- @param rasterHeight number
+--- @param x number
+--- @param y number
+--- @param width number
+--- @param height number
+--- @overload fun(fileName:string, rasterWidth:number, rasterHeight:number):number
+--- @overload fun(fileName:string, rasterWidth:number, rasterHeight:number, x:number, y:number):number
+--- @return number, number, number
+function loadVectorImage(fileName, rasterWidth, rasterHeight, x, y, width, height)
+    local f = findResourceFile(fileName)
+    if f == nil then
+        logError("Can't find vector texture", fileName)
+        return nil
+    end
+
+    local s
+    if height ~= nil then s = sasl.gl.getGLVectorTexture(f, rasterWidth, rasterHeight, x, y, width, height)
+    elseif y ~= nil then s = sasl.gl.getGLVectorTexture(f, rasterWidth, rasterHeight, x, y)
+    else s = sasl.gl.getGLVectorTexture(f, rasterWidth, rasterHeight) end
+
+    if not s then
+        logError("Can't load vector texture", fileName)
+        return nil
+    end
+    local w, h = sasl.gl.getTextureSize(s)
+    return s, w, h
 end
 
 sasl.gl.loadImage = loadImage
+sasl.gl.loadVectorImage = loadVectorImage
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MODULES FONTS LOADERS ----------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+sasl.gl.unloadImage = unloadTexture
+unloadImage = unloadTexture
+sasl.gl.loadImageFromMemory = loadTextureFromMemory
+loadImageFromMemory = loadTextureFromMemory
 
--- Load bitmap font
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--- Loads old-style bitmap font from file.
+--- @param fileName string
+--- @return number
 function loadBitmapFont(fileName)
-    return loadFontImpl(fileName, sasl.gl.getGLBitmapFont)
+    return private.loadFontImpl(fileName, sasl.gl.getGLBitmapFont)
 end
 
 sasl.gl.loadBitmapFont = loadBitmapFont
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load font
+--- Loads font from file (TTF, TTC, OTF, etc).
+--- @param fileName string
+--- @return number
 function loadFont(fileName)
-    return loadFontImpl(fileName, sasl.gl.getGLFont)
+    return private.loadFontImpl(fileName, sasl.gl.getGLFont)
 end
 
 sasl.gl.loadFont = loadFont
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load font common implementation
-function loadFontImpl(fileName, loadingFunction)
+--- Loads font using specified.
+--- @param fileName string
+--- @param loadingFunction fun(fileName:string):number
+--- @return number
+function private.loadFontImpl(fileName, loadingFunction)
     local f = findResourceFile(fileName)
-    if f == 0 then 
-        logResourceErrorStacktrace("Can't find font", fileName)
+    if f == nil then
+        logError("Can't find font", fileName)
         return nil
     end
 
     local font = loadingFunction(f)
     if not font then
-        logResourceErrorStacktrace("Can't load font", fileName)
+        logError("Can't load font", fileName)
     end
     return font
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MODULES SOUNDS LOADERS -------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load sample from file
+--- Load sound sample from file.
+--- @param fileName string
+--- @param needToCreateTimer boolean
+--- @param needReversed boolean
+--- @overload fun(fileName:string):number
+--- @overload fun(fileName:string, needToCreateTimer:boolean):number
+--- @return number
 function loadSample(fileName, needToCreateTimer, needReversed)
     if needToCreateTimer == nil then needToCreateTimer = false end
     if needReversed == nil then needReversed = false end
-    
+
     local f = findResourceFile(fileName)
-    if f == 0 then 
-        logResourceErrorStacktrace("Can't find sound", fileName)
+    if f == nil then
+        logError("Can't find sound", fileName)
         return nil
     end
 
     local s = sasl.al.loadSampleFromFile(f, needToCreateTimer, needReversed)
     if s == nil then
-        logResourceErrorStacktrace("Can't load sound", fileName)
+        logError("Can't load sound", fileName)
         return nil
     end
     return s
@@ -109,62 +148,69 @@ end
 
 sasl.al.loadSample = loadSample
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MODULES OBJECTS LOADER ---------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load object from file
+--- Loads XP object from file.
+--- @param fileName string
+--- @return number
 function loadObject(fileName)
     local f = findResourceFile(fileName)
-    if f == 0 then 
-        logResourceErrorStacktrace("Can't find object", fileName)
+    if f == nil then
+        logError("Can't find object", fileName)
         return nil
     end
 
     local o = sasl.loadObjectFromFile(f)
     if o == nil then
-        logResourceErrorStacktrace("Can't load object", fileName)
+        logError("Can't load object", fileName)
     end
     return o
 end
 
 sasl.loadObject = loadObject
 
--- Load object from file asynchronously
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--- Loads XP object from file asynchronously.
+--- @param fileName string
+--- @param callback fun(id:number)
+--- @return number
 function loadObjectAsync(fileName, callback)
     local f = findResourceFile(fileName)
-    if f == 0 then 
-        logResourceErrorStacktrace("Can't find object", fileName)
+    if f == nil then
+        logError("Can't find object", fileName)
         return nil
     end
 
     local o = sasl.loadObjectAsyncFromFile(f, callback)
     if o == nil then
-        logResourceErrorStacktrace("Can't load object", fileName)
+        logError("Can't load object", fileName)
     end
     return o
 end
 
 sasl.loadObjectAsync = loadObjectAsync
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MODULES SHADERS LOADER --------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load shader source from file
+--- Loads shader source from file.
+--- @param shaderID number
+--- @param fileName string
+--- @param shType ShaderTypeID
 function loadShader(shaderID, fileName, shType)
     local f = findResourceFile(fileName)
-    if f == 0 then 
-        logResourceErrorStacktrace("Can't find shader source", fileName)
+    if f == nil then
+        logError("Can't find shader source", fileName)
         return nil
     end
-    
+
     sasl.gl.addShader(shaderID, f, shType)
 end
 
-
 sasl.gl.loadShader = loadShader
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------

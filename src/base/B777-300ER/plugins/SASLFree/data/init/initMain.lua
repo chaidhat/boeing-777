@@ -1,28 +1,67 @@
----------------------------------------------------------------------------------------------------------------------------
--- SETUP PATHS FOR ADDITIONAL PACKAGES AND 3-RD PARTY LIBRARIES -----------------------------------
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Setup paths for additional packages and 3-rd party libraries
+-------------------------------------------------------------------------------
 
 package.path = package.path .. ';' .. getProjectPath() .. '/3rd-modules/?.lua'
 package.path = package.path .. ';' .. getProjectPath() .. '/Custom Module/?.lua'
 
-if (getOS() == "Windows") then
-    package.cpath = package.cpath .. ';' .. getProjectPath() .. '/3rd-Modules/?.dll'
-    package.cpath = package.cpath .. ';' .. getProjectPath() .. '/Custom Module/?.dll'
-else 
-    package.cpath = package.cpath .. ';' .. getProjectPath() .. '/3rd-Modules/?.so'
-    package.cpath = package.cpath .. ';' .. getProjectPath() .. '/Custom Module/?.so'
+local __OS = sasl.getOS()
+local __PackExt
+
+if __OS == "Windows" then
+    __PackExt = "dll"
+elseif __OS == "Linux" then
+    __PackExt = "so"
+else
+    __PackExt = "dylib"
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- COMPONENTS -------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+package.cpath = package.cpath .. ';' .. getProjectPath() .. '/3rd-modules/?.' .. __PackExt
+package.cpath = package.cpath .. ';' .. getProjectPath() .. '/Custom Module/?.' .. __PackExt
 
--- Create basic component
-function createComponent(name, parent)
-    local data = { 
-        components = { },
+-------------------------------------------------------------------------------
+-- Components
+-------------------------------------------------------------------------------
+
+--- @class Component
+--- @field components Component[]
+--- @field component fun(comp:Component):Component
+--- @field defineProperty fun(name:string, dflt:any)
+--- @field include fun(name:string)
+--- @field fbo Property | boolean
+--- @field fpsLimit Property | number
+--- @field noRenderSignal Property | boolean
+--- @field clip Property | boolean
+--- @field clipSize Property | number[]
+--- @field draw fun(self:Component)
+--- @field drawObjects fun(self:Component)
+--- @field draw3D fun(self:Component)
+--- @field update fun(self:Component)
+--- @field name string
+--- @field visible Property | boolean
+--- @field movable Property | boolean
+--- @field resizable Property | boolean
+--- @field resizeProportional Property | boolean
+--- @field onMouseDown fun(self:Component, x:number, y:number, button:MouseButtonID, parentX:number, parentY:number):boolean
+--- @field onMouseUp fun(self:Component, x:number, y:number, button:MouseButtonID, parentX:number, parentY:number):boolean
+--- @field onMouseHold fun(self:Component, x:number, y:number, button:MouseButtonID, parentX:number, parentY:number):boolean
+--- @field onMouseMove fun(self:Component, x:number, y:number, button:MouseButtonID, parentX:number, parentY:number):boolean
+--- @field onMouseWheel fun(self:Component, x:number, y:number, button:MouseButtonID, parentX:number, parentY:number, wheelClicks:number):boolean
+--- @field onKeyDown fun(self:Component, char:number, key:number, shiftDown:number, ctrlDown:number, AltOptDown:number):boolean
+--- @field onKeyUp fun(self:Component, char:number, key:number, shiftDown:number, ctrlDown:number, AltOptDown:number):boolean
+--- @field logInfo fun(...)
+--- @field logWarning fun(...)
+--- @field logDebug fun(...)
+--- @field logError fun(...)
+--- @field print fun(...)
+
+--- Creates basic component.
+--- @param name string
+--- @param parent Component
+--- @return Component
+function private.createComponent(name, parent)
+    local data = {
+        components = {},
         fbo = createProperty(false),
         renderTarget = -1,
         fpsLimit = createProperty(-1),
@@ -30,28 +69,28 @@ function createComponent(name, parent)
         noRenderSignal = createProperty(false),
         clip = createProperty(false),
         clipSize = createProperty { 0, 0, 0, 0 },
-        draw = function (comp) drawAll(comp.components); end,
-        drawObjects = function (comp) drawAllObjects(comp.components); end,
-        draw3D = function (comp) drawAll3D(comp.components); end,
-        update = function (comp) updateAll(comp.components); end,
+        draw = function(comp) drawAll(comp.components) end,
+        drawObjects = function(comp) drawAllObjects(comp.components) end,
+        draw3D = function(comp) drawAll3D(comp.components) end,
+        update = function(comp) updateAll(comp.components) end,
         name = name,
         visible = createProperty(true),
         movable = createProperty(false),
         resizable = createProperty(false),
         focused = createProperty(false),
         resizeProportional = createProperty(true),
-        onMouseUp = defaultOnMouseUp,
-        onMouseDown = defaultOnMouseDown,
-        onMouseHold = defaultOnMouseHold,
-        onMouseMove = defaultOnMouseMove,
-        onMouseWheel = defaultOnMouseWheel,
-        onKeyDown = defaultOnKeyDown,
-        onKeyUp = defaultOnKeyUp,
-    logInfo = function(...) sasl.logInfo('"' .. name .. '"', ...); end,
-    logError = function(...) sasl.logError('"' .. name .. '"', ...); end,
-    logDebug = function(...) sasl.logDebug('"' .. name .. '"', ...); end,
-    logWarning = function(...) sasl.logWarning('"' .. name .. '"', ...); end,
-    print = function(...) sasl.print('"' .. name .. '"', ...); end,
+        onMouseDown = private.defaultOnMouseDown,
+        onMouseUp = private.defaultOnMouseUp,
+        onMouseHold = private.defaultOnMouseHold,
+        onMouseMove = private.defaultOnMouseMove,
+        onMouseWheel = private.defaultOnMouseWheel,
+        onKeyDown = private.defaultOnKeyDown,
+        onKeyUp = private.defaultOnKeyUp,
+        logInfo = function(...) sasl.logInfo('"'..name..'"', ...) end,
+        logError = function(...) sasl.logError('"'..name..'"', ...) end,
+        logDebug = function(...) sasl.logDebug('"'..name..'"', ...) end,
+        logWarning = function(...) sasl.logWarning('"'..name..'"', ...) end,
+        print = function(...) sasl.print('"'..name..'"', ...) end
     }
     data._C = data
     if parent then
@@ -59,63 +98,63 @@ function createComponent(name, parent)
         if parent.position then
             local parentPosition = get(parent.position)
             data.size = { parentPosition[3], parentPosition[4] }
-        elseif parent.size then   
+        elseif parent.size then
             data.size = parent.size
         end
         data.position = createProperty { 0, 0, data.size[1], data.size[2] }
     end
-    addComponentFunc(data)
+    private.addComponentFunc(data)
     return data
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Try to find key in local table first.
--- Look in global table if key doesn't exists in local table.
--- Try to load component from file if it doesn't exists in global table
-function compIndex(table, key)
+--- Index lookup function for components system.
+--- @param table table
+--- @param key any
+function private.compIndex(table, key)
     local comp = table
-    while nil ~= comp do
+    while comp ~= nil do
         local v = rawget(comp, key)
-        if nil ~= v then 
-            return v 
+        if v ~= nil then
+            return v
         else
             comp = rawget(comp, '_P')
         end
     end
 
     v = _G[key]
-    if nil == v then
+    if v == nil then
         return loadComponent(key)
     else
         return v
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Create component function
-function addComponentFunc(component)
-    component.component = function(name, tbl)
-        if not tbl then -- anonymous subcomponent
-            tbl = name
-            name = nil
-        end
-        table.insert(component.components, tbl)
-        return tbl
+--- Creates <component> function for specified component.
+--- @param component Component
+--- @return Component
+function private.addComponentFunc(component)
+    component.component = function(comp)
+        table.insert(component.components, comp)
+        return comp
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Add properties to component
-function setupComponent(component, args)
-    mergeTables(component, argumentsToProperties(args))
-    setmetatable(component, { __index = compIndex })
-    
+--- Adds properties to component and setup component helper functions.
+--- @param component Component
+--- @param args table
+function private.setupComponent(component, args)
+    private.mergeComponentTables(component, private.argumentsToProperties(args))
+    setmetatable(component, { __index = private.compIndex })
+
     component.defineProperty = function(name, dflt)
         if not rawget(component, name) then
             component[name] = createProperty(dflt)
@@ -125,91 +164,103 @@ function setupComponent(component, args)
     component.include = function(name)
         include(component, name)
     end
-
-    addComponentFunc(component)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Components stack on creation 
-local creatingComponents = { }
+--- Components creation stack.
+local creatingComponents = {}
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Call it before creation of components
+--- Starts creation of components using current stack level.
+--- @param parent Component
 function startComponentsCreation(parent)
     table.insert(creatingComponents, parent)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Call it after creation of components
+--- Finishes creation of components using current stack level.
 function finishComponentsCreation()
     table.remove(creatingComponents)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load component from file and create constructor
-function loadComponent(name, fileName, isRoot)
-	if not isRoot then
-		logInfo("loading", name)
-	end
-    
-    if not fileName then
-        fileName = name .. ".lua"
-    end
+--- Loads component from constructor function.
+--- @param name string
+--- @param constructor function
+--- @return function
+function registerComponent(name, constructor)
+    return loadComponent(name, constructor, false)
+end
 
-    local f, subdir = openFile(fileName)
-    if not f then
-        logError("can't load component", name)
-        return nil
+--- Loads component from file or predefined function and creates constructor.
+--- @param name string
+--- @param source string | function
+--- @param isRoot boolean
+--- @return function
+function loadComponent(name, source, isRoot)
+    local f, subdir, fileName
+
+    if type(source) == "function" then
+        f = source
+    else
+        fileName = source
+        if not isRoot then
+            logInfo("loading", name)
+        end
+
+        if not fileName then
+            fileName = name..".lua"
+        end
+
+        f, subdir = openFile(fileName)
+        if not f then
+            logError("can't load component", name)
+            return nil
+        end
     end
 
     local constr = function(args)
         local parent = creatingComponents[#creatingComponents]
-		if parent and parent.name == "module" and parent.size then
+        if parent and parent.name == "module" and parent.size then
             parent.position = createProperty { 0, 0, parent.size[1], parent.size[2] }
         end
-		
+
         if subdir then
             addSearchPath(subdir)
         end
-        local t = createComponent(name, parent)
+        local t = private.createComponent(name, parent)
         t.componentFileName = fileName
 
-        setupComponent(t, args)
-        if isProperty(t.position) then
+        private.setupComponent(t, args)
+        if isProperty(t.position) or type(t.position) == 'function' then
             local curPosition = get(t.position)
             t.size = { curPosition[3], curPosition[4] }
         elseif parent then
             t.size = { 0, 0 }
-            if isProperty(parent.position) then
+            if isProperty(parent.position) or type(parent.position) == 'function' then
                 local parentPosition = get(parent.position)
                 t.size = { parentPosition[3], parentPosition[4] }
-            elseif parent.size then   
+            elseif parent.size then
                 t.size = parent.size
             end
             t.position = createProperty { 0, 0, t.size[1], t.size[2] }
         end
-        
+
         startComponentsCreation(t)
         setfenv(f, t)
-        f()
+        f(t)
         finishComponentsCreation()
-        
+
         if get(t.fpsLimit) ~= -1 then
             set(t.fbo, true)
         end
-        
+
         if toboolean(get(t.fbo)) then
             t.renderTarget = sasl.gl.createRenderTarget(t.size[1], t.size[2])
         end
-        
+
         if subdir then
             popSearchPath(subdir)
         end
@@ -217,14 +268,15 @@ function loadComponent(name, fileName, isRoot)
     end
 
     _G[name] = constr
-
     return constr
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Load script inside component environment
+--- Loads script inside component environment.
+--- @param component Component
+--- @param name string
 function include(component, name)
     logInfo("including", name)
 
@@ -235,7 +287,7 @@ function include(component, name)
         if subdir then
             addSearchPath(subdir)
         end
-            
+
         setfenv(f, component)
         f()
 
@@ -245,28 +297,54 @@ function include(component, name)
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Add component to popup layer
-function popup(name, tbl)
-    return popups.component(name, tbl)
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- GLOBAL INTERNAL SETTINGS -------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Global internal settings and states
+-------------------------------------------------------------------------------
 
 globalShowInteractiveAreas = false
+private.savedState = nil
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- COMPONENTS HANDLERS FOR SIMULATOR EVENTS ------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+function private.initState()
+    private.savedState = {}
+    private.savedState.legacyPopups = {}
+    private.savedState.contextWindows = {}
+end
 
--- Run handler of component
-function runComponentHandler(component, name, mx, my, button, x, y, value)
+--- Saves current state.
+function private.saveState()
+    private.initState()
+    private.savePopupsState()
+    private.saveContextWindowsState()
+    private.writeTableToFile(moduleDirectory.."/state.txt", private.savedState, "state")
+end
+
+--- Loads current state.
+function private.loadState()
+    private.initState()
+    local savedStateFile = loadfile(moduleDirectory.."/state.txt")
+    if savedStateFile ~= nil then
+        local temp = {}
+        setfenv(savedStateFile, temp)
+        savedStateFile()
+        private.savedState = temp["state"]
+    end
+end
+
+-------------------------------------------------------------------------------
+-- Common functional for mouse events handlers
+-------------------------------------------------------------------------------
+
+--- Runs mouse event handler of component.
+--- @param component Component
+--- @param name string
+--- @param mx number
+--- @param my number
+--- @param button number
+--- @param x number
+--- @param y number
+--- @param value number
+--- @return boolean
+function private.runMouseEventComp(component, name, mx, my, button, x, y, value)
     local handler = rawget(component, name)
     if handler then
         return handler(component, mx, my, button, x, y, value)
@@ -275,84 +353,63 @@ function runComponentHandler(component, name, mx, my, button, x, y, value)
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Traverse components and finds best handler with specified name
-function runHandler(component, name, x, y, button, path, value)
-    local position = get(component.position)
-    local size = component.size
-    if (not (position and size)) then
-        return false
-    end
-    local mx = (x - position[1]) * size[1] / position[3]
-    local my = (y - position[2]) * size[2] / position[4]
-    for i = #component.components, 1, -1 do
-        local v = component.components[i]
-        if toboolean(get(v.visible)) and isInRect(get(v.position), mx, my) then
-            local res = runHandler(v, name, mx, my, button, path, value)
-            if res then
-                if path then
-                    table.insert(path, component)
+--- Goes through components hierarchy and executes most appropriate event handler with specified name.
+--- @param component Component
+--- @param name string
+--- @param x number
+--- @param y number
+--- @param button number
+--- @param value number
+--- @return boolean, Component[]
+function private.runMouseEvent(component, name, x, y, button, value)
+    local function runMouseEvent(component, name, x, y, button, path, value)
+        local position = get(component.position)
+        local size = component.size
+        if not (position and size) then
+            return false
+        end
+        local mx = (x - position[1]) * size[1] / position[3]
+        local my = (y - position[2]) * size[2] / position[4]
+        for i = #component.components, 1, -1 do
+            local v = component.components[i]
+            if toboolean(get(v.visible)) and isInRect(get(v.position), mx, my) then
+                local res = runMouseEvent(v, name, mx, my, button, path, value)
+                if res then
+                    if path then
+                        table.insert(path, component)
+                    end
+                    return true
                 end
-                return true
             end
         end
-    end
-    local res = runComponentHandler(component, name, mx, my, button, x, y, value)
-    if res then
-        if path then
-            table.insert(path, component)
+        local res = private.runMouseEventComp(component, name, mx, my, button, x, y, value)
+        if res then
+            if path then
+                table.insert(path, component)
+            end
         end
+        return res
     end
-    return res
+
+    local path = {}
+    return runMouseEvent(component, name, x, y, button, path, value), path
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Returns path to component under mouse
-function getFocusedPath(component, x, y, path)
-    table.insert(path, component)
-    local position = get(component.position)
-    local size = component.size
-    if (not (position and size)) then
-        return
-    end
-    local mx = (x - position[1]) * size[1] / position[3]
-    local my = (y - position[2]) * size[2] / position[4]
-    for i = #component.components, 1, -1 do
-        local v = component.components[i]
-        if toboolean(get(v.visible)) and isInRect(get(v.position), mx, my) then
-            getFocusedPath(v, mx, my, path)
-        end
-    end
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Returns path to component under mouse
-function getTopFocusedPath(layer, x, y)
-    local path = { }
-    if layer == 1 then
-        getFocusedPath(popups, x, y, path)
-        if #path > 1 then
-            return path
-        end
-        path = { }
-    end
-    if layer == 2 then
-        getFocusedPath(panel, x, y, path)
-    end
-    return path
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Run handler of pressed component
-function runPressedHandler(path, name, x, y, button, value)
+--- Runs mouse event for specific component.
+--- @param path Component[]
+--- @param name string
+--- @param x number
+--- @param y number
+--- @param button number
+--- @param value number
+--- @return boolean
+function private.runMouseEventByPath(path, name, x, y, button, value)
     local mx = x
     local my = y
     local px = x
@@ -366,50 +423,101 @@ function runPressedHandler(path, name, x, y, button, value)
         mx = (mx - position[1]) * c.size[1] / position[3]
         my = (my - position[2]) * c.size[2] / position[4]
     end
-    return runComponentHandler(path[1], name, mx, my, button, px, py, value)
+    return private.runMouseEventComp(path[1], name, mx, my, button, px, py, value)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Traverse components and finds best handler with specified name
-function runTopHandler(layer, name, x, y, button, value)
-    local path = { }
-    if layer == 1 then
-        local res = runHandler(popups, name, x, y, button, path, value)
-        if res then
-            return true, path
+--- Returns path to component under mouse.
+--- @param component Component
+--- @param x number
+--- @param y number
+--- @return Component[]
+function private.getMouseHoverPath(component, x, y)
+    local function getMouseHoverPath(component, x, y, path)
+        table.insert(path, component)
+        local position = get(component.position)
+        local size = component.size
+        if not (position and size) then
+            return
+        end
+        local mx = (x - position[1]) * size[1] / position[3]
+        local my = (y - position[2]) * size[2] / position[4]
+        for i = #component.components, 1, -1 do
+            local v = component.components[i]
+            if toboolean(get(v.visible)) and isInRect(get(v.position), mx, my) then
+                getMouseHoverPath(v, mx, my, path)
+            end
         end
     end
-    if layer == 2 then
-        return runHandler(panel, name, x, y, button, path, value), path
+
+    local path = {}
+    getMouseHoverPath(component, x, y, path)
+    return path
+end
+
+-------------------------------------------------------------------------------
+-- Auxiliary functional for cursors
+-------------------------------------------------------------------------------
+
+--- @class Cursor
+--- @field x number
+--- @field y number
+--- @field width number
+--- @field height number
+--- @field shape number
+
+--- Cursor state and position.
+private.cursor = nil
+
+local function isCursorTable(c)
+    return c.x ~= nil and
+        c.y ~= nil and
+        c.width ~= nil and
+        c.height ~= nil and
+        c.shape ~= nil
+end
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--- Sets cursor.
+--- @param cursor Cursor
+function private.setCursor(cursor)
+    private.cursor = get(cursor)
+    local sh = private.cursor
+    if sh ~= nil and isCursorTable(sh) then
+        sasl.gl.setCursorShape(true, sh.shape, sh.x, sh.y, sh.width, sh.height)
+    else
+        sasl.gl.setCursorShape(false)
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Returns value of cursor property for specified layer
-function getTopCursorShape(layer, x, y)
-    if layer == 1 then
-        local cursor = getCursorShape(popups, x, y)
-        if cursor then
-            return cursor
+--- Checks if OS cursor should be hidden for current cursor.
+--- @return boolean
+function private.isOSCursorHidden()
+    local sh = private.cursor
+    if sh ~= nil and isCursorTable(sh) then
+        if sh.hideOSCursor ~= nil and sh.hideOSCursor == true then
+            return true
         end
     end
-    if layer == 2 then
-        return getCursorShape(panel, x, y)
-    end
+    return false
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Returns value of cursor property
-function getCursorShape(component, x, y)
+--- Runs through components hierarchy and finds most appropriate cursor.
+--- @param component Component
+--- @param x number
+--- @param y number
+--- @return Cursor
+function private.getComponentCursor(component, x, y)
     local position = get(component.position)
     local size = component.size
-    if (not (position and size)) then
+    if not (position and size) then
         return nil
     end
     local mx = (x - position[1]) * size[1] / position[3]
@@ -417,7 +525,7 @@ function getCursorShape(component, x, y)
     for i = #component.components, 1, -1 do
         local v = component.components[i]
         if toboolean(get(v.visible)) and isInRect(get(v.position), mx, my) then
-            local res = getCursorShape(v, mx, my)
+            local res = private.getComponentCursor(v, mx, my)
             if res then
                 return res
             end
@@ -426,134 +534,212 @@ function getCursorShape(component, x, y)
     return rawget(component, "cursor")
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Auxiliary functional for interaction system
+-------------------------------------------------------------------------------
 
--- Set shape of cursor
-function setCursor(x, y, shape, layer)
-    if layer ~= 2 then
-        cursor.x = x
-        cursor.y = y
-    end
-    cursor.shape = get(shape)
-    if cursor.shape ~= nil and cursor.shape.hideOSCursor ~= nil and cursor.shape.hideOSCursor == true then
-        return true
-    else 
-        return false
-    end
-end
+private.eventCounter = 0
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Draw cursor shape
-function drawCursor()       
-    if cursor.shape and cursor.shape.shape then
-        sasl.gl.drawTexture(cursor.shape.shape, 
-                cursor.x + cursor.shape.x, cursor.y + cursor.shape.y,
-                cursor.shape.width, cursor.shape.height,
-                { 1.0, 1.0, 1.0, 1.0 })
-    end
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Pressed button number
 local pressedButton = 0
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Path to component after mouse press
-local pressedComponentPath = nil
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Currently entered component
-local enteredComponent = nil
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Update pressed component path
-function setPressedPath(path)
-    pressedComponentPath = path
+function private.setPressedButton(button)
+    pressedButton = button
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+function private.getPressedButton()
+    return pressedButton
+end
 
--- Path to focused component
-local focusedComponentPath = nil
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+local pressedComponentPath = {}
 
--- Update focused component path
-function setFocusedPath(path)
-    if path and (0 == #path) then
+function private.setPressedComponentPath(path)
+    pressedComponentPath[private.eventCounter] = path
+end
+
+function private.getPressedComponentPath()
+    return pressedComponentPath[private.eventCounter]
+end
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+local enteredComponent = {}
+
+function private.setEnteredComponent(c)
+    enteredComponent[private.eventCounter] = c
+end
+
+function private.getEnteredComponent()
+    return enteredComponent[private.eventCounter]
+end
+
+-------------------------------------------------------------------------------
+-- Focusing
+-------------------------------------------------------------------------------
+
+local focusedComponentPath = {}
+
+function private.setFocusedComponentPath(path)
+    focusedComponentPath[private.eventCounter] = path
+end
+
+function private.getFocusedComponentPath()
+    return focusedComponentPath[private.eventCounter]
+end
+
+function private.clearFocusedComponentPaths()
+    focusedComponentPath = {}
+end
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--- Sets focused component path.
+--- @param path Component[]
+function private.setFocusedPath(path)
+    if path and #path == 0 then
         path = nil
     end
-    if focusedComponentPath then
-        for _, c in pairs(focusedComponentPath) do
+    local currentFocusedComponentPath = private.getFocusedComponentPath()
+    if currentFocusedComponentPath then
+        for _, c in ipairs(currentFocusedComponentPath) do
             set(c.focused, false)
         end
     end
-    focusedComponentPath = path
-    if focusedComponentPath then
-        for _, c in ipairs(focusedComponentPath) do
+    private.setFocusedComponentPath(path)
+    if path then
+        for _, c in ipairs(path) do
             set(c.focused, true)
         end
     end
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Traverse visible focused components and call specified function
-function traverseFocused(func, char, key, shiftDown, ctrlDown, AltOptDown)
-    if focusedComponentPath then
+--- Runs specified key event handler for currently visible focused component.
+--- @param name string
+--- @param char number
+--- @param key number
+--- @param shiftDown number
+--- @param ctrlDown number
+--- @param altOptDown number
+--- @return boolean
+function private.runKeyEventFocused(name, char, key, shiftDown, ctrlDown, altOptDown)
+    private.eventCounter = private.eventCounter + 1
+    local handled = false
+    local currentFocusedComponentPath = private.getFocusedComponentPath()
+    if currentFocusedComponentPath then
         local maxVisible = 0
-        for i = 1, #focusedComponentPath, 1 do
-            local c = focusedComponentPath[i]
+        for i = 1, #currentFocusedComponentPath, 1 do
+            local c = currentFocusedComponentPath[i]
             if toboolean(get(c.visible)) then
                 maxVisible = i
             else
-                break;
+                break
             end
         end
         for i = maxVisible, 1, -1 do
-            local c = focusedComponentPath[i]
-            local res = c[func](c, char, key, shiftDown, ctrlDown, AltOptDown)
+            local c = currentFocusedComponentPath[i]
+            local res = c[name](c, char, key, shiftDown, ctrlDown, altOptDown)
             if res then
-                return true
+                handled = true
             end
         end
     end
-    return false
+    private.eventCounter = private.eventCounter - 1
+    return handled
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- SIMULATOR MOUSE CALLBACKS HANDLERS ---------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+--- Runs key down event handler for currently visible focused component.
+--- @param char number
+--- @param key number
+--- @param shiftDown number
+--- @param ctrlDown number
+--- @param altOptDown number
+--- @return boolean
+function processKeyDownEvent(char, key, shiftDown, ctrlDown, altOptDown)
+    return private.runKeyEventFocused("onKeyDown", char, key, shiftDown, ctrlDown, altOptDown)
+end
 
--- Called when mouse button was pressed
-function onMouseDown(x, y, button, layer)
-    setFocusedPath(getTopFocusedPath(layer, x, y))
-    pressedButton = button
-    local handled, path = runTopHandler(layer, "onMouseDown", x, y, button, 0)
+--- Runs key up event handler for currently visible focused component.
+--- @param char number
+--- @param key number
+--- @param shiftDown number
+--- @param ctrlDown number
+--- @param altOptDown number
+--- @return boolean
+function processKeyUpEvent(char, key, shiftDown, ctrlDown, altOptDown)
+    return private.runKeyEventFocused("onKeyUp", char, key, shiftDown, ctrlDown, altOptDown)
+end
+
+-------------------------------------------------------------------------------
+-- Functional for legacy intercepting window
+-------------------------------------------------------------------------------
+
+local onInterceptingWindow = false
+
+--- Activates/deactivates cursor for legacy intercepting window.
+--- @param isOn boolean
+function private.setOnInterceptingWindow(isOn)
+    if isOn then
+        sasl.gl.setCursorLayer(0)
+        if onInterceptingWindow ~= isOn then
+            private.setCursor(nil)
+        end
+    end
+    onInterceptingWindow = isOn
+end
+
+-------------------------------------------------------------------------------
+-- General mouse events handlers for components system
+-------------------------------------------------------------------------------
+
+--- Finds and executes mouse button down event for components hierarchy.
+--- @param component Component
+--- @param x number
+--- @param y number
+--- @param button number
+--- @return boolean
+function processMouseDown(component, x, y, button)
+    private.eventCounter = private.eventCounter + 1
+    private.setFocusedPath(private.getMouseHoverPath(component, x, y))
+    private.setPressedButton(button)
+    local handled, path = private.runMouseEvent(component, "onMouseDown", x, y, button)
     if handled then
-        setPressedPath(path)
-        if layer == 1 then
+        private.setPressedComponentPath(path)
+    end
+    private.eventCounter = private.eventCounter - 1
+    return handled
+end
+
+--- Called when mouse button was pressed.
+function onMouseDown(x, y, button, layer)
+    private.eventCounter = 1
+    if layer == MB_LAYER_POPUP or button == MB_LEFT then
+        local path = private.getMouseHoverPath(layer == MB_LAYER_POPUP and popups or panel, x, y)
+        if layer == MB_LAYER_POPUP and #path == 1 then
+            path = {}
+        end
+        private.setFocusedPath(path)
+    end
+    private.setPressedButton(button)
+    local handled, path = private.runMouseEvent(layer == MB_LAYER_POPUP and popups or panel, "onMouseDown", x, y, button)
+    if handled then
+        private.setPressedComponentPath(path)
+        if layer == MB_LAYER_POPUP then
             local comp = path[1]
-            for i, v in pairs(popups.components) do
+            for i, v in ipairs(popups.components) do
                 if v == comp then
                     table.remove(popups.components, i)
                     table.insert(popups.components, comp)
-                    setPressedPath(nil)
+                    private.setPressedComponentPath(nil)
                     return handled
                 end
             end
@@ -562,171 +748,215 @@ function onMouseDown(x, y, button, layer)
     return handled
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Called when mouse button was released
+--- Finds and executes mouse button up event for components hierarchy.
+--- @param component Component
+--- @param x number
+--- @param y number
+--- @param button number
+--- @return boolean
+function processMouseUp(component, x, y, button)
+    private.eventCounter = private.eventCounter + 1
+    local pressedPath = private.getPressedComponentPath()
+    local handled
+    if pressedPath then
+        handled = private.runMouseEventByPath(pressedPath, "onMouseUp", x, y, button)
+        private.setPressedButton(0)
+        private.setPressedComponentPath(nil)
+    else
+        handled = private.runMouseEvent(component, "onMouseUp", x, y, button)
+    end
+    private.eventCounter = private.eventCounter - 1
+    return handled
+end
+
+--- Called when mouse button was released.
 function onMouseUp(x, y, button, layer)
-    if pressedComponentPath then
-        local res = runPressedHandler(pressedComponentPath, "onMouseUp", 
-                x, y, button, 0)
-        pressedButton = 0
-        setPressedPath(nil)
-        return res
-    else
-        return runTopHandler(layer, "onMouseUp", x, y, button, 0)
-    end
+    private.eventCounter = 0
+    return processMouseUp(layer == MB_LAYER_POPUP and popups or panel, x, y, button)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Called when mouse hold event was processed
+--- Finds and executes mouse button hold event for components hierarchy.
+--- @param component Component
+--- @param x number
+--- @param y number
+--- @param button number
+--- @return boolean
+function processMouseHold(component, x, y, button)
+    private.eventCounter = private.eventCounter + 1
+    private.setPressedButton(button)
+    local handled, path = private.runMouseEvent(component, "onMouseHold", x, y, button)
+    if handled then
+        private.setPressedComponentPath(path)
+    end
+    private.eventCounter = private.eventCounter - 1
+    return handled
+end
+
+--- Called when mouse hold event was processed.
 function onMouseHold(x, y, button, layer)
-    if pressedComponentPath then
-        setCursor(x, y, cursor.shape, layer)
-        return runPressedHandler(pressedComponentPath, "onMouseHold", 
-                x, y, button, 0)
-    else
-        pressedButton = button
-        local handled, path = runTopHandler(layer, "onMouseHold", x, y, button, 0)
-        if handled then
-            setPressedPath(path)
-        end
-        return handled
-    end
+    private.eventCounter = 0
+    return processMouseHold(layer == MB_LAYER_POPUP and popups or panel, x, y, button)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Called when mouse wheel event was processed
+--- Finds and executes mouse wheel event for components hierarchy.
+--- @param component Component
+--- @param x number
+--- @param y number
+--- @param wheelClicks number
+--- @return boolean
+function processMouseWheel(component, x, y, wheelClicks)
+    private.eventCounter = private.eventCounter + 1
+    local handled = private.runMouseEvent(component, "onMouseWheel", x, y, 4, wheelClicks)
+    private.eventCounter = private.eventCounter - 1
+    return handled
+end
+
+--- Called when mouse wheel event was processed.
 function onMouseWheel(x, y, wheelClicks, layer)
-    if pressedComponentPath then
-        local res = runPressedHandler(pressedComponentPath, "onMouseWheel", 
-                x, y, 4, wheelClicks)
-        return res
-    else
-        return runTopHandler(layer, "onMouseWheel", x, y, 4, wheelClicks)
-    end
+    private.eventCounter = 0
+    return processMouseWheel(layer == MB_LAYER_POPUP and popups or panel, x, y, wheelClicks)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Called when mouse motion event was processed
-function onMouseMove(x, y, layer)
-    local resultCursorID = 0
-    local res
-    if pressedComponentPath then
-        resultCursorID = 1
+--- Finds and executes mouse move event for components hierarchy.
+--- @param component Component
+--- @param x number
+--- @param y number
+function processMouseMove(component, x, y)
+    private.eventCounter = private.eventCounter + 1
+    local cursor = private.getComponentCursor(component, x, y)
+    private.setCursor(cursor)
+
+    local res, path = private.runMouseEvent(component, "onMouseMove", x, y, private.getPressedButton())
+    local currentEnteredComponent = private.getEnteredComponent()
+    if res == true then
+        if currentEnteredComponent ~= path[1] then
+            if currentEnteredComponent ~= nil then
+                leaveHandler = rawget(currentEnteredComponent, "onMouseLeave")
+                if leaveHandler ~= nil then
+                    leaveHandler()
+                end
+            end
+            private.setEnteredComponent(path[1])
+            enterHandler = rawget(private.getEnteredComponent(), "onMouseEnter")
+            if enterHandler ~= nil then
+                enterHandler()
+            end
+        end
     else
-        if layer == 1 and #popups.components > 0 then
+        if currentEnteredComponent ~= nil then
+            leaveHandler = rawget(currentEnteredComponent, "onMouseLeave")
+            if leaveHandler ~= nil then
+                leaveHandler()
+            end
+        end
+        private.setEnteredComponent(nil)
+    end
+    private.eventCounter = private.eventCounter - 1
+end
+
+--- Called when mouse motion event was processed.
+function onMouseMove(x, y, layer)
+    private.eventCounter = 1
+    if layer == MB_LAYER_POPUP then
+        private.setOnInterceptingWindow(true)
+    end
+    local resultCursor = 0
+    local pressedPath = private.getPressedComponentPath()
+    if not pressedPath then
+        if layer == MB_LAYER_POPUP and #popups.components > 0 then
             local size = popups.size
             local position = get(popups.position)
             local mx = (x - position[1]) * size[1] / position[3]
             local my = (y - position[2]) * size[2] / position[4]
             for i = #popups.components, 1, -1 do
                 local v = popups.components[i]
-                if toboolean(get(v.visible)) and 
-                        isInRect(get(v.position), mx, my) 
-                then
-                    resultCursorID = 1
+                if toboolean(get(v.visible)) and isInRect(get(v.position), mx, my) then
+                    resultCursor = 1
                     break
                 end
             end
         end
-    end
-    if pressedComponentPath then
-        local hideOSCursorMode = setCursor(x, y, cursor.shape, layer)
-        if hideOSCursorMode then
-            resultCursorID = 2
+        if layer == MB_LAYER_PANEL and x < 0 and y < 0 then
+            private.setCursor(nil)
+            return resultCursor
         end
-        res = runPressedHandler(pressedComponentPath, "onMouseMove", 
-                x, y, pressedButton, 0)
     else
-        local cursor = getTopCursorShape(layer, x, y)
-        local hideOSCursorMode = setCursor(x, y, cursor, layer)
-        if hideOSCursorMode then
-            resultCursorID = 2
-        end
-        local path
-        res, path = runTopHandler(layer, "onMouseMove", x, y, pressedButton, 0)
-        if res == true then
-            if enteredComponent ~= path[1] then
-                if enteredComponent ~= nil then
-                    leaveHandler = rawget(enteredComponent, "onMouseLeave")
-                    if leaveHandler ~= nil then
-                        leaveHandler()
-                    end
-                end
-                enteredComponent = path[1]
-                enterHandler = rawget(enteredComponent, "onMouseEnter")
-                if enterHandler ~= nil then
-                    enterHandler()
-                end
-            end
-        else
-            if enteredComponent ~= nil then
-                leaveHandler = rawget(enteredComponent, "onMouseLeave")
-                if leaveHandler ~= nil then
-                    leaveHandler()
-                end
-            end
-            enteredComponent = nil
-        end
+        resultCursor = 1
     end
-    if not res then
-        resultCursorID = 0
+    if layer == MB_LAYER_POPUP and resultCursor == 0 then
+        return resultCursor
     end
-    return resultCursorID
+    private.eventCounter = 0
+    processMouseMove(layer == MB_LAYER_POPUP and popups or panel, x, y)
+    if private.isOSCursorHidden() then
+        resultCursor = 2
+    end
+    return resultCursor
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- SIMULATOR KEY CALLBACKS HANDLERS -------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- General key events handlers for components system
+-------------------------------------------------------------------------------
 
--- Called when button pressed
-function onKeyDown(char, key, shiftDown, ctrlDown, AltOptDown)
-    return traverseFocused('onKeyDown', char, key, shiftDown, ctrlDown, AltOptDown)
+--- Called when button pressed.
+function onKeyDown(char, key, shiftDown, ctrlDown, altOptDown)
+    private.eventCounter = 0
+    return processKeyDownEvent(char, key, shiftDown, ctrlDown, altOptDown)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Called when button released
-function onKeyUp(char, key, shiftDown, ctrlDown, AltOptDown)
-    return traverseFocused('onKeyUp', char, key, shiftDown, ctrlDown, AltOptDown)
+--- Called when button released.
+function onKeyUp(char, key, shiftDown, ctrlDown, altOptDown)
+    private.eventCounter = 0
+    return processKeyUpEvent(char, key, shiftDown, ctrlDown, altOptDown)
 end
 
----------------------------------------------------------------------------------------------------------------------------
--- GLOBAL DATA -------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Global project data and corresponding helpers
+-------------------------------------------------------------------------------
 
--- List of paths to search module components
-searchPath = { ".", "" }
+--- List of paths to search module components.
+private.searchPath = { ".", "" }
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+--- List of paths to search module resources (images, fonts, shaders, sounds, objects).
+private.searchResourcesPath = { ".", "" }
 
--- List of paths to search module resources (images, fonts, shaders, sounds, objects)
-searchResourcesPath = { ".", "" }
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Add path to search path
+--- Adds path to search paths lists.
+--- @param path string
 function addSearchPath(path)
-    table.insert(searchPath, 1, path)
-    table.insert(searchResourcesPath, 1, path)
+    table.insert(private.searchPath, 1, path)
+    table.insert(private.searchResourcesPath, 1, path)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+--- Adds path to search resources paths list.
+--- @param path string
+function addSearchResourcesPath(path)
+    table.insert(private.searchResourcesPath, 1, path)
+end
 
--- Remove search path
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--- Removes path from search paths lists.
+--- @overload fun()
+--- @param path string
 function popSearchPath(path)
     local remover = function(path, list)
         for k, v in ipairs(list) do
@@ -737,92 +967,63 @@ function popSearchPath(path)
         end
     end
     if path then
-        remover(path, searchPath)
-        remover(path, searchResourcesPath)
+        remover(path, private.searchPath)
+        remover(path, private.searchResourcesPath)
         return
     end
-    table.remove(searchPath, 1)
-    table.remove(searchResourcesPath, 1)
+    table.remove(private.searchPath, 1)
+    table.remove(private.searchResourcesPath, 1)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Add path to images search path
-function addSearchResourcesPath(path)
-    table.insert(searchResourcesPath, 1, path)
+--- Removes path from search resources paths list.
+--- @overload fun()
+--- @param path string
+function popSearchResourcesPath(path)
+    if path then
+        for k, v in ipairs(private.searchResourcesPath) do
+            if v == path then
+                table.remove(private.searchResourcesPath, k)
+                return
+            end
+        end
+        return
+    end
+    table.remove(private.searchResourcesPath, 1)
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Saved popups positions
-popupsPositions = nil
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Cursor state and position
-cursor = {
-    x = 0,
-    y = 0,
-    shape = nil
-}
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MANAGING MAIN ENTITIES ----------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Resizes panel
+--- Resizes panel main component.
 function resizePanel(width, height)
     set(panel.position, { 0, 0, width, height })
-	panel.size[1] = width
-	panel.size[2] = height
+    panel.size[1] = width
+    panel.size[2] = height
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
--- Resizes popups 
+--- Resizes legacy popups main component.
 function resizePopup(width, height)
     set(popups.position, { 0, 0, width, height })
     popups.size[1] = width
     popups.size[2] = height
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- Loading module
+-------------------------------------------------------------------------------
 
--- Move panel to top of screen
-function movePanelToTop(panel)
-    for i, v in pairs(popups.components) do
-        if v == panel then
-            table.remove(popups.components, i)
-            table.insert(popups.components, panel)
-            return
-        end
-    end
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- MODULE LOADER ---------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Loads module from main module file
+--- Loads module from main module file.
 function loadModule(fileName, panelWidth, panelHeight, popupWidth, popupHeight)
-    popups = createComponent("popups")
+    popups = private.createComponent("popups")
     popups.position = createProperty { 0, 0, popupWidth, popupHeight }
-    popups.size = { popupWidth, popupHeight }    
-    local savedPopupsFile = loadfile(moduleDirectory .. '/popupsPositions.txt')
-    if savedPopupsFile ~= nil then
-        local temp = {}
-        setfenv(savedPopupsFile, temp)
-        savedPopupsFile()
-        popupsPositions = temp['positions']
-    end
-    
+    popups.size = { popupWidth, popupHeight }
+
+    contextWindows = private.createComponent("contextWindows")
+    private.loadState()
+
     local c = loadComponent("module", fileName, isRoot)
     if not c then
         logError("Error loading main component", fileName)
@@ -832,97 +1033,5 @@ function loadModule(fileName, panelWidth, panelHeight, popupWidth, popupHeight)
     return panel
 end
 
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- COMMON CALLERS --------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Call callback function
-function callCallback(name, component)
-    local handler = rawget(component, name)
-    if handler then
-        handler()
-    end
-    for i = #component.components, 1, -1 do
-        callCallback(name, component.components[i])
-    end
-end
-
--- Call callback for both panel and popups
-function callCallbackForAll(name)
-    callCallback(name, popups)
-    callCallback(name, panel)
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
--- COMMON SIMULATOR CALLBACK HANDLERS --------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called whenever the user's plane is positioned at a new airport
-function onAirportLoaded()
-    callCallbackForAll("onAirportLoaded")
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called whenever new scenery is loaded
-function onSceneryLoaded()
-    callCallbackForAll("onSceneryLoaded")
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called whenever the user adjusts the number of X-Plane aircraft models
-function onAirplaneCountChanged()
-    callCallbackForAll("onAirplaneCountChanged")
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called when user aircraft is loaded
-function onPlaneLoaded()
-    callCallbackForAll("onPlaneLoaded")
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called when user aircraft is unloaded
-function onPlaneUnloaded()
-    callCallbackForAll("onPlaneUnloaded")
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called whenever user plane is crashed. Returns 1 if SASL system is need to be reloaded, 0 otherwise
-function onPlaneCrash()
-    local planeCrashHandler = rawget(panel, 'onPlaneCrash')
-    needReload = 1
-    if planeCrashHandler then
-        needReload = planeCrashHandler()
-    end
-    if needReload == 0 then
-        for i = #panel.components, 1, -1 do
-            callCallback('onPlaneCrash', panel.components[i])
-        end
-        callCallback('onPlaneCrash', popups)
-    end
-    return needReload
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
-
--- Called when module about to unload
-function doneModules()
-    callCallbackForAll("onModuleDone")
-    savePopupsPositions()
-end
-
----------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------

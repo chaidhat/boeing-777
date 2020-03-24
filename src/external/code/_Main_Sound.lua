@@ -77,6 +77,7 @@ defineProperty("n2val_2", globalPropertyfae("sim/flightmodel/engine/ENGN_N2_", 2
 
 
 function update ()
+    print(asound_file);
 
 -- read datarefs for this frame
 
@@ -146,25 +147,25 @@ function reverse()
 		if rev_gain[i] > 0 then					-- if the gain value is greater than zero, we should be playing sound.  correct as needed
 				if (get(globalPropertyf("sim/time/sim_speed")) > 0) and (get(globalPropertyi("sim/operation/sound/sound_on")) > 0) then
 					if not isSamplePlaying(al) then
-						playSample(al, 1)
+						playSample(al)
 					end
 					if not isSamplePlaying(bl) then
-						playSample(bl, 1)
+						playSample(bl)
 					end
 					if not isSamplePlaying(cl) then
-						playSample(cl, 1)
-					end
+						playSample(cl)
+                    end
 					if not isSamplePlaying(nl) then
-						playSample(nl, 1)
+						playSample(nl)
 					end
 					if not isSamplePlaying(ar) then
-						playSample(ar, 1)
+						playSample(ar)
 					end
 					if not isSamplePlaying(br) then
-						playSample(br, 1)
+						playSample(br)
 					end
 					if not isSamplePlaying(cr) then
-						playSample(cr, 1)
+						playSample(cr)
 					end
 				end
 		end

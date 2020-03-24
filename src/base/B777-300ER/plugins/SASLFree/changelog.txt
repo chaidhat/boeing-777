@@ -1,4 +1,263 @@
 ----------------------------------------------------------
+SASL 3.9.0 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed tracking of 3D panel mouse position in multi-monitor configurations and with rotational offsets applied for monitors
+- Fixed bug with mouse cursor associated with 3D panel component being active after leaving 3D panel
+- Fixed configuring 3D positional sounds for Aircraft plugins
+- Fixed context windows states saving and restoring, also visibily is now saved as well
+- Added Lua functions to track 3D panel mouse position - <getCSMouseIsOnPanel>, <getCSPanelMousePos>
+- Added Lua routines to save and restore OGL internal line primitives settings
+- Added option to draw text vertically 
+- Added async variants of functions to perform data transfers from URL (Net interface)
+- Updated SASL Dev Widget UI (scrollbars, drefs & commands search, dynamic text size, bugfixes)
+- Updated SASL default cursors texture 
+
+----------------------------------------------------------
+SASL 3.8.0 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed cathing middle mouse button events for legacy pop-ups and 3d panel
+- Fixed bug with attempt to render into texture, which is already freed
+- Fixed SASL_CW_RESIZE_RIGHT_BOTTOM resizing mode for non-propotional context windows
+- Improved cursor showing behavior for component, more logical and convenient
+- Improved windows layering (legacy pop-ups window now live in separate layer)
+- Added ability to save context window state (position, active context) between project loadings
+- Added functional to work with stereographic projections
+- Added ability to completely destroy context window, freeing all handled resources (<destroy> method)
+- Added function to reset timer
+- Added function to create hi-res system timer (can be used to measure time within same callback)
+- Added annotations for Lua SASL interface (used for auto-completion)
+- Restructured internal code related to events system, etc
+
+----------------------------------------------------------
+SASL 3.7.2 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed usage of nested render targets in non-graphics callbacks (<update>, etc)
+
+----------------------------------------------------------
+SASL 3.7.1 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed some unnecessary re-activation triggers on Windows OS (Commercial Version)
+- Fixed irrelevant entry in the Log about error before activation (Commercial Version)
+
+----------------------------------------------------------
+SASL 3.7.0 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed possible CTD during automatic context window positioning
+- Used other method to catch click event for additional Click System Layer in VR
+- Added function to disable and enable Unicode support for the font instance
+- Added new Lua callback for components on shutdown - <onModuleShutdown>
+
+----------------------------------------------------------
+SASL 3.6.5 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed CTD on X-Plane exit in case if SASL project is a Global Plugin
+- Fixed internal click system bug with HOLD and UP mouse buttons statuses
+
+----------------------------------------------------------
+SASL 3.6.4 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed possibility of CTD on startup in Linux version
+- Fixed middle mouse button event for old-style <subpanel> windows
+
+----------------------------------------------------------
+SASL 3.6.3 (XP11.25+ support)
+----------------------------------------------------------
+
+- Minor internal DRM fix (Commercial Version)
+
+----------------------------------------------------------
+SASL 3.6.1 (XP11.25+ support)
+----------------------------------------------------------
+
+- Added <drawArcLine> function
+- Added functions for changing OpenGL line width and stipple parameters
+- Updated arguments specification for component creation (properties are passed as references)
+- Updated <setFontBckPadding> function
+
+----------------------------------------------------------
+SASL 3.6.0 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed drawing multi-line text with non-default alignment
+- Fixed cursor management for context windows after window is closed
+- Fixed some cases when incorrect functions arguments are not handled
+- Fixed rendering in to target with anti-aliasing enabled
+- Fixed memory issue in case of using anti-aliasing
+- Fixed logging of failed command handler call, shows failed command ID
+- Fixed data management for functional array-like properties (datarefs)
+- Fixed possible memory leak in case of image loading failure
+- Added size getter callback usage for functional array-like properties (datarefs)
+- Added new text rendering mode (forcing monospacing)
+- Added function for empty texture creation
+- Added ability to specify font glyphs spacing factor
+- Added ability to use nested masking stack and nested render targets
+- Added functional for text rendering with background
+- Added ability to create global properties (datarefs) as read-only
+- Updated Click System layer functional
+- Updated logging in some places
+- Updated routines for text measurement
+- Removed ability to setup cursors scale factor in Click System
+- Removed some experimental text rendering modes
+
+----------------------------------------------------------
+SASL 3.5.1 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed <globalProperty> wrapper for string datarefs
+- Fixed crash after <getEnvVariable> on Mac and Linux
+- Fixed setting string datarefs (non-partial setters)
+- Fixed broken <getCSMouseYPos> function
+- Fixed special font render modes parametrization - ratio should be used instead of fixed value
+- Fixed text measurement in case if special modes applied
+- Added new mode for text drawing: with forced fixed horizontal advance
+- Added new functions for fonts system (instance configurations, instance-specific drawing)
+- Partially reverted focus logic for Context Windows (fixes possible issues with global key handlers)
+
+----------------------------------------------------------
+SASL 3.5.0 (XP11.25+ support)
+----------------------------------------------------------
+
+- Fixed possible corruption of X-Plane interface textures after textured drawing in the Context Window
+- Fixed Context Window keyboard focusing logic in different modes
+- Fixed various issues with keeping Context Windows proportionality
+- Fixed missing TYPE_UNKNOWN global value
+- Fixed crash during rendering to texture target on initial project loading outside of any callback function
+- Fixed a few issues with functional Lua datarefs
+- Fixed auto-management of Context Window position 
+- Fixed receiving global monitors bounds via <getMonitorBoundsGlobal> in X-Plane < 11.30
+- Fixed cursor shape cut by Context Window edges
+- Fixed issue with CA certificates on Windows OS during usage of <net> functionality
+- Fixed instancing of Fonts IDs - specifying different fonts options for different fonts instances is now working
+- Fixed fonts usage with outline thickness < 1.0 
+- Fixed a few SVG usage issues: loading, fill rules, passing SVG error message into Log
+- Fixed fonts data caching
+- Fixed necessity of tuning X-Plane App Security Settings on Mac OS 10.14
+- Added ability to use fixed glyph spacing mode for text rendering
+- Added ability to use partial getters/setters for string datarefs (same as for array datarefs)
+- Added function for getting current Context Windows mode
+- Added callback parameter for Context Window - designed to intercept various events related to internal windowing system
+- Added ability to enable VR auto-handling for Context Window
+- Added ability to select MSAA level during rendering to target
+- Added alternative mode for Context Window resizing - only one resize spot on right bottom edge (only applies to windows without default X-Plane decoration)
+- Added ability to separetely apply custom window decoration for base window rectangle - in the same way as for header decoration
+- Added options to alter behavior of some drawing routines related to wide lines and convex polygons
+- Added interface for managing environment variables for current process
+- Added function to clear rectangular shape in current render target
+- Added functional for setting various download timeouts
+- Improved datarefs sub-system
+- Improved <globalProperty> function, allowing to use array index notation
+- Improved auxiliary click system interface
+- Improved activation widget interface (Commercial Version)
+
+----------------------------------------------------------
+SASL 3.4.2 (XP11.25+ support)
+----------------------------------------------------------
+
+- Added way to invert masking logic on <drawUnderMask> call
+- Fixed global key handlers - now there's additional argument which identifies the event 
+
+----------------------------------------------------------
+SASL 3.4.1 (XP11.20+ support)
+----------------------------------------------------------
+
+- Improved custom datarefs export to DRE and to Datarefs Tree in Widget - now the export is correct 
+    even if dataref is created after initial project loading
+- Improved work with render targets - now rendering in texture is possible not only in <draw> callbacks
+- Improved type casts messages for datarefs lookup - now they're mandatory DEBUG level messages
+- Improved datarefs lookup and creation speed
+- Improved texture minification filtering - using mipmaps
+- Improved images loading - supporting more formats and specifications
+- Fixed <sasl.gl.loadImageFromMemory> function presence
+- Fixed resetting current logging level after project reboot
+- Fixed broken sound system on some Linux distributions
+- Fixed crash on project reboot when Functional Properties in use 
+
+----------------------------------------------------------
+SASL 3.4.0 (XP11.20+ support)
+----------------------------------------------------------
+
+- Fixed a few issues with <noResize> and <noMove> options for <contextWindow>
+- Remade proportional resizing in <contextWindow>
+- Added ability to configure custom window header - <customDecore> option for <contextWindow>
+- Added ability to change parameters (movable, resizable, proportional) for <contextWindow> on the fly
+- <contextWindow> now saves its previous position on modes changing (pop-out, free, etc)
+- Fixed a bug with 3D panel clicks introduces in 3.3.0 version.
+
+----------------------------------------------------------
+SASL 3.3.3 (XP11.20+ support)
+----------------------------------------------------------
+
+- Fixed various issues with unnecessary re-activation requests (Commercial Version)
+- Fixed <drawMaskStart> function
+
+----------------------------------------------------------
+SASL 3.3.2 (XP11.20+ support)
+----------------------------------------------------------
+
+- Fixed cache for interpolators objects
+- Fixed graphics artifacts in SASL Developer widget title
+
+----------------------------------------------------------
+SASL 3.3.1 (XP11.20+ support)
+----------------------------------------------------------
+
+- Fixed various issues with unnecessary re-activation requests (Commercial Version)
+- Fixed activation dialog appearance on some multi-monitor setups (Commercial Version)
+- Dump problematic path in case of <listFiles> function fails
+- Fixed huge FPS drop in case of Context Windows usage in VR
+
+----------------------------------------------------------
+SASL 3.3.0 (XP11.20+ support)
+----------------------------------------------------------
+
+- Removed XP10 support
+- Add support for XP11 features (multi-monitors, OS pop-out windows, VR support etc)
+    - Refer to the <XP11> marks in the documentation 
+- Add support for using SVG format
+- Updated warnings and errors dumping
+- Updated SASL Developer Widget to support multi-monitors and OS pop-out mode
+- Improved DRM functionality to avoid unnecessary activations requests (Commercial Version)
+
+----------------------------------------------------------
+SASL 3.2.7
+----------------------------------------------------------
+
+- Fix various issues with unnecessary re-activation requests (Commercial Version)
+
+----------------------------------------------------------
+SASL 3.2.6
+----------------------------------------------------------
+
+- Fix various issues with unnecessary re-activation requests (Commercial Version)
+
+----------------------------------------------------------
+SASL 3.2.5
+----------------------------------------------------------
+
+- Fixed issue with huge project reboot time in case of DRE windows presence 
+- Fixed OpenAL issues on Mac OS with SASL 3.2.4
+- Improved DRM regarding unnecessary activations requests (Commercial Version) 
+- Fixed <hideOSCursor> option for components on 3D panel
+- Added <setRenderTextPixelAligned> function to set pixel accurate text rendering mode
+- Added info about warnings and errors log entries count (since Reboot) into Developer Widget
+- Add ability to use alpha texture as mask between <drawMaskStart> and <drawUnderMask> calls
+- Fixed <fbo> option for components
+- Added new function for setting Lua stacktrace limit used in case of Warnings and Errors
+- Fixed <unloadImage> function absence 
+- Added default mouse wheel handler for popups (now they're not transparent for mouse wheel action)
+- Fixed error logging in case of resources lookup fail
+- Returned ability to specify <position> for component as function
+- Fixed some SASL virtual keys constants values 
+- Fixed hard crash in case of some graphics resources lookup fail during draw routines call
+
+----------------------------------------------------------
 SASL 3.2.4
 ----------------------------------------------------------
 

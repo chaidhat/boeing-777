@@ -1,6 +1,6 @@
-SASL
-Scriptable Aviation Simulation Library (Free Edition)
-Version: 3.2.4+3d8a967
+Scriptable Aviation Simulation Library
+Lua scripting environment for X-Plane add-ons (Free Edition)
+Version: 3.9.0+890d171
 
-1-sim.com
-Copyright FlightFactor 2018
+
+© 2012-2020 FlightFactor, © 2015-2020 StepToSky
