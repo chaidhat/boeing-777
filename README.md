@@ -10,4 +10,6 @@ The digital simulation of the <b>Boeing 777-300ER</b> is a hobby I have been wor
 <i>This is in early development and therefore is not representable of what the finished product will be like.</i>\
 \
 [statistics regarding downloads](https://www.somsubhra.com/github-release-stats/?username=Chai112&repository=Chai112-s-Boeing-777-300ER)\
+[![https://grabify.link/7CNI2R](https://github.com/Chai112/Boeing-777-300ER/blob/master/docs/s/who%20logo.jpg)](https://grabify.link/7CNI2R)
 ![](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/blob/master/screenshots/Screenshot%20(901).png)
+![](https://github.com/Chai112/Boeing-777-300ER/blob/master/docs/s/cockpit.jpg)
