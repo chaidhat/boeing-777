@@ -1,4 +1,5 @@
-# Chai112's Boeing 777-300ER | [[Download Aircraft](https://forums.x-plane.org/index.php?/profile/520176-chai112/)]
+# Chai112's Boeing 777-300ER | \
+# [VERY CLOSE TO V1.0! PLEASE KEEP WAITING. LINK WILL BE POSTED HERE.]
 
 ### Freeware B777-300ER aircraft project for X-Plane 11 - by Chai112
 ### Over 5800 downloads on April 2020 - Started on October 26, 2016
@@ -9,10 +10,7 @@ The result is a massive four year open-source project with over hundreds of manh
 \
 <i>This is in early development and therefore is not representable of what the finished product will be like.</i>
 
-### [Previous Versions](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/releases)
-### [Unreleased Versions](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/tree/master/src)
-### [Statistics regarding downloads](https://www.somsubhra.com/github-release-stats/?username=Chai112&repository=Chai112-s-Boeing-777-300ER)
-
+# [VERY CLOSE TO V1.0! PLEASE KEEP WAITING. LINK WILL BE POSTED HERE.]
 # [Please support the WHO's Covid-19 Response Fund](https://grabify.link/7CNI2R)
 [![](https://github.com/Chai112/Boeing-777-300ER/blob/master/docs/s/who%20logo.jpg)](https://grabify.link/7CNI2R)
 ![](https://github.com/Chai112/Chai112-s-Boeing-777-300ER/blob/master/screenshots/Screenshot%20(901).png)
