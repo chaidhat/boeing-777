@@ -1,4 +1,4 @@
-# Chai112's Boeing 777-300ER | \
+# Chai112's Boeing 777-300ER
 # [VERY CLOSE TO V1.0! PLEASE KEEP WAITING. LINK WILL BE POSTED HERE.]
 
 ### Freeware B777-300ER aircraft project for X-Plane 11 - by Chai112
